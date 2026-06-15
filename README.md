@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/badge/build-passing-brightgreen.svg" alt="Build Status">
   </a>
   <a href="LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
+    <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="License">
   </a>
 </p>
 
@@ -158,4 +158,4 @@ if __name__ == "__main__":
 
 ## 📄 Lisans
 
-Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır. Dilediğiniz gibi kullanabilir, değiştirebilir ve dağıtabilirsiniz.
+Bu proje [Apache-2.0 Lisansı](LICENSE) altında lisanslanmıştır. Dilediğiniz gibi kullanabilir, değiştirebilir ve dağıtabilirsiniz.
