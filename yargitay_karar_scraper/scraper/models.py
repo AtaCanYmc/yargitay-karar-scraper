@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional, Any
+from typing import List, Optional
 
 
 class SearchCriteria(BaseModel):
@@ -44,4 +44,5 @@ class SearchResponse(BaseModel):
 class CaseDetail(BaseModel):
     id: str = Field(description="Karar doküman ID'si")
     icerik: str = Field(description="Kararın tam metni veya detaylı içeriği")
+    raw: str = Field(description="Ham HTML veya JSON yanıtı")
     error: Optional[str] = None

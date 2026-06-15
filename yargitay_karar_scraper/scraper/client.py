@@ -1,7 +1,7 @@
 import httpx
 import logging
 from typing import Dict, Any
-
+import re
 from .models import SearchCriteria, DetailedSearchCriteria, SearchResponse, CaseResult, CaseDetail
 
 logger = logging.getLogger(__name__)
@@ -38,7 +38,7 @@ class YargitayClient:
         if criteria.kelime:
             data_payload["aranan"] = criteria.kelime
             data_payload["arananKelime"] = criteria.kelime
-            
+
         payload = {"data": data_payload}
 
         try:
@@ -55,7 +55,8 @@ class YargitayClient:
                 # Gerçek JSON yanıt formatına göre ayrıştırma
                 response_data = data.get("data", {}) if isinstance(data, dict) else {}
                 items = response_data.get("data", []) if isinstance(response_data, dict) else []
-                total_count = response_data.get("recordsTotal", len(items)) if isinstance(response_data, dict) else len(items)
+                total_count = response_data.get("recordsTotal", len(items)) if isinstance(response_data, dict) else len(
+                    items)
 
                 for item in items:
                     if isinstance(item, dict):
@@ -96,7 +97,7 @@ class YargitayClient:
             "pageSize": criteria.page_size,
             "pageNumber": criteria.page_number
         }
-        
+
         payload = {"data": data_payload}
 
         try:
@@ -109,7 +110,8 @@ class YargitayClient:
 
                 response_data = data.get("data", {}) if isinstance(data, dict) else {}
                 items = response_data.get("data", []) if isinstance(response_data, dict) else []
-                total_count = response_data.get("recordsTotal", len(items)) if isinstance(response_data, dict) else len(items)
+                total_count = response_data.get("recordsTotal", len(items)) if isinstance(response_data, dict) else len(
+                    items)
 
                 for item in items:
                     if isinstance(item, dict):
@@ -143,17 +145,16 @@ class YargitayClient:
 
                 data = response.json()
                 html_content = data.get("data", "") if isinstance(data, dict) else response.text
-                
+
                 # HTML etiketlerini temizleyip okunabilir metin haline getiriyoruz
-                import re
                 text_content = re.sub(r'<[^>]+>', ' ', html_content)
                 text_content = re.sub(r'\s+', ' ', text_content).strip()
 
-                return CaseDetail(id=document_id, icerik=text_content)
+                return CaseDetail(id=document_id, icerik=text_content, raw=html_content)
 
         except httpx.HTTPError as e:
             logger.error(f"Doküman getirme HTTP Hatası: {e}")
-            return CaseDetail(id=document_id, icerik="", error=f"Doküman çekilemedi: {str(e)}")
+            return CaseDetail(id=document_id, icerik="", raw="", error=f"Doküman çekilemedi: {str(e)}")
         except Exception as e:
             logger.error(f"Beklenmeyen Hata: {e}")
-            return CaseDetail(id=document_id, icerik="", error=f"Beklenmeyen hata oluştu: {str(e)}")
+            return CaseDetail(id=document_id, icerik="", raw="", error=f"Beklenmeyen hata oluştu: {str(e)}")
