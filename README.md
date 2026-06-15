@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/logo.png" alt="Yargıtay Karar Arama Scraper Logo" width="250">
+  <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/logo.png" alt="Yargıtay Karar Arama Scraper Logo" width="250">
 </p>
 
 <h1 align="center">Yargıtay Karar Arama Scraper & MCP Sunucusu</h1>
@@ -45,17 +45,17 @@
     <tr>
       <td align="center">
         <b>Basit Arama</b><br>
-        <img src="images/cli_search_example.png" alt="Basit Arama CLI">
+        <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/cli_search_example.png" alt="Basit Arama CLI">
       </td>
       <td align="center">
         <b>Detaylı Arama</b><br>
-        <img src="images/cli_detailed_search_example.png" alt="Detaylı Arama CLI">
+        <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/cli_detailed_search_example.png" alt="Detaylı Arama CLI">
       </td>
     </tr>
     <tr>
       <td colspan="2" align="center">
         <b>Karar Detayı Okuma</b><br>
-        <img src="images/cli_karar_detail_example.png" alt="Karar Detayı Okuma CLI">
+        <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/cli_karar_detail_example.png" alt="Karar Detayı Okuma CLI">
       </td>
     </tr>
   </table>
