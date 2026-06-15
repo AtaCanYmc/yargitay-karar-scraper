@@ -94,7 +94,7 @@ yargitay-karar-cli search --kelime "hırsızlık" --page-size 10
 
 **Gelişmiş / Detaylı Arama:**
 ```bash
-yargitay-karar-cli detailed-search --kelime "ömer" --daire "1. Ceza Dairesi" --karar-yil "2018"
+yargitay-karar-cli detailed-search --kelime "hırsızlık" --daire "1. Ceza Dairesi" --karar-yil "2018"
 ```
 
 **Bir Kararın Tam Metnini Çekmek:**
@@ -129,6 +129,30 @@ Kurulumu yaptıktan sonra Claude'a doğrudan şu şekilde promptlar verebilirsin
 > *"Bana Yargıtay 1. Ceza Dairesinin 2018 yılında vermiş olduğu 'kasten adam öldürme' ile ilgili kararları bulur musun?"*
 
 *Daha fazla detay ve kullanım senaryosu için `docs/mcp_usage.md` dosyasına göz atabilirsiniz.*
+
+### 3. Python Kütüphanesi Olarak Kullanım
+
+Eğer kendi Python projenizde doğrudan kod üzerinden kullanmak isterseniz, paketimizin asenkron (async) `YargitayClient` sınıfını kolayca projenize dahil edebilirsiniz:
+
+```python
+import asyncio
+from yargitay_karar_scraper.scraper import YargitayClient, SearchCriteria
+
+async def main():
+    client = YargitayClient()
+    criteria = SearchCriteria(kelime="dolandırıcılık", page_size=5)
+    
+    response = await client.search(criteria)
+    
+    if not response.error:
+        for case in response.results:
+            print(f"Karar ID: {case.id} | Esas/Karar: {case.esas_no} / {case.karar_no}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+*Kendi projenize entegre etmeden önce daha fazla detaylı kod örneği incelemek için projedeki `examples/` klasörüne göz atabilirsiniz.*
 
 ---
 
