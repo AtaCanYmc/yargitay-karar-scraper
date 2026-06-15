@@ -14,22 +14,16 @@ def cli():
     pass
 
 @cli.command()
-@click.option('--kelime', help='Aranacak kelime veya kelime öbeği')
-@click.option('--daire', help='İlgili daire (Ör: 1, 2, Ceza, vb.)')
-@click.option('--esas-no', help='Esas numarası')
-@click.option('--karar-no', help='Karar numarası')
-def search(kelime, daire, esas_no, karar_no):
-    """Belirtilen kriterlere göre kararları arar."""
+@click.option('--kelime', required=True, help='Aranacak kelime veya kelime öbeği')
+@click.option('--page-size', default=10, help='Sayfa başı kayıt sayısı')
+@click.option('--page-number', default=1, help='Sayfa numarası')
+def search(kelime, page_size, page_number):
+    """Belirtilen kelime ile basit arama yapar."""
     criteria = SearchCriteria(
         kelime=kelime,
-        daire=daire,
-        esas_no=esas_no,
-        karar_no=karar_no
+        page_size=page_size,
+        page_number=page_number
     )
-    
-    if not any([kelime, daire, esas_no, karar_no]):
-        console.print("[bold red]Hata:[/bold red] En az bir arama kriteri girmelisiniz.")
-        return
 
     console.print(f"[bold blue]Arama yapılıyor...[/bold blue]")
     

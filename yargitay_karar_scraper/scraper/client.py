@@ -1,8 +1,8 @@
 import httpx
 import logging
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 
-from .models import SearchCriteria, SearchResponse, CaseResult, CaseDetail
+from .models import SearchCriteria, DetailedSearchCriteria, SearchResponse, CaseResult, CaseDetail
 
 logger = logging.getLogger(__name__)
 
@@ -32,18 +32,12 @@ class YargitayClient:
         """Belirtilen kriterlere göre kararları arar."""
         # Gerçek request yapısına göre payload hazırlanması
         data_payload: Dict[str, Any] = {
-            "pageSize": 10,
-            "pageNumber": 1
+            "pageSize": criteria.page_size,
+            "pageNumber": criteria.page_number
         }
         if criteria.kelime:
             data_payload["aranan"] = criteria.kelime
             data_payload["arananKelime"] = criteria.kelime
-        if criteria.daire:
-            data_payload["daire"] = criteria.daire
-        if criteria.esas_no:
-            data_payload["esasNo"] = criteria.esas_no
-        if criteria.karar_no:
-            data_payload["kararNo"] = criteria.karar_no
             
         payload = {"data": data_payload}
 
@@ -84,6 +78,60 @@ class YargitayClient:
             logger.error(f"Beklenmeyen Hata: {e}")
             return SearchResponse(results=[], error=f"Beklenmeyen hata oluştu: {str(e)}")
 
+    async def detailed_search(self, criteria: DetailedSearchCriteria) -> SearchResponse:
+        """Detaylı arama kriterlerine göre kararları arar."""
+        data_payload: Dict[str, Any] = {
+            "arananKelime": criteria.kelime,
+            "daire": criteria.daire,
+            "baslangicTarihi": criteria.baslangic_tarihi,
+            "bitisTarihi": criteria.bitis_tarihi,
+            "esasYil": criteria.esas_yil,
+            "esasIlkSiraNo": criteria.esas_ilk_sira_no,
+            "esasSonSiraNo": criteria.esas_son_sira_no,
+            "kararYil": criteria.karar_yil,
+            "kararIlkSiraNo": criteria.karar_ilk_sira_no,
+            "kararSonSiraNo": criteria.karar_son_sira_no,
+            "siralama": criteria.siralama,
+            "siralamaDirection": criteria.siralama_direction,
+            "pageSize": criteria.page_size,
+            "pageNumber": criteria.page_number
+        }
+        
+        payload = {"data": data_payload}
+
+        try:
+            async with httpx.AsyncClient(timeout=self.timeout, headers=self.headers, verify=False) as client:
+                response = await client.post(self.DETAIL_SEARCH_ENDPOINT, json=payload)
+                response.raise_for_status()
+
+                data = response.json()
+                results = []
+
+                response_data = data.get("data", {}) if isinstance(data, dict) else {}
+                items = response_data.get("data", []) if isinstance(response_data, dict) else []
+                total_count = response_data.get("recordsTotal", len(items)) if isinstance(response_data, dict) else len(items)
+
+                for item in items:
+                    if isinstance(item, dict):
+                        results.append(CaseResult(
+                            id=str(item.get("id", "")),
+                            kurum="Yargıtay",
+                            daire=item.get("daire", ""),
+                            esas_no=item.get("esasNo", ""),
+                            karar_no=item.get("kararNo", ""),
+                            tarih=item.get("kararTarihi", ""),
+                            ozet=item.get("arananKelime", "")
+                        ))
+
+                return SearchResponse(results=results, total_count=total_count)
+
+        except httpx.HTTPError as e:
+            logger.error(f"HTTP Hatası (Detaylı Arama): {e}")
+            return SearchResponse(results=[], error=f"HTTP isteği başarısız: {str(e)}")
+        except Exception as e:
+            logger.error(f"Beklenmeyen Hata (Detaylı Arama): {e}")
+            return SearchResponse(results=[], error=f"Beklenmeyen hata oluştu: {str(e)}")
+
     async def get_document(self, document_id: str) -> CaseDetail:
         """Belirtilen ID'ye sahip kararın tam metnini getirir."""
         params = {"id": document_id}
@@ -93,10 +141,15 @@ class YargitayClient:
                 response = await client.get(self.DOCUMENT_ENDPOINT, params=params)
                 response.raise_for_status()
 
-                # Gerçek sistemde bu PDF veya HTML olabilir.
-                content = response.text
+                data = response.json()
+                html_content = data.get("data", "") if isinstance(data, dict) else response.text
+                
+                # HTML etiketlerini temizleyip okunabilir metin haline getiriyoruz
+                import re
+                text_content = re.sub(r'<[^>]+>', ' ', html_content)
+                text_content = re.sub(r'\s+', ' ', text_content).strip()
 
-                return CaseDetail(id=document_id, icerik=content)
+                return CaseDetail(id=document_id, icerik=text_content)
 
         except httpx.HTTPError as e:
             logger.error(f"Doküman getirme HTTP Hatası: {e}")

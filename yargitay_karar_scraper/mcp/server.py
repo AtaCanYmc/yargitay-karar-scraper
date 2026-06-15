@@ -3,31 +3,51 @@ import json
 from mcp.server.fastmcp import FastMCP
 from pydantic import Field
 
-from yargitay_karar_scraper.scraper import YargitayClient, SearchCriteria
+from yargitay_karar_scraper.scraper import YargitayClient, DetailedSearchCriteria
 
 # MCP Sunucusunu başlatıyoruz
 mcp = FastMCP("Yargitay Karar Arama Sunucusu")
 
 @mcp.tool()
 async def search_cases(
-    kelime: str = Field(None, description="Aranacak kelime veya kelime öbeği"),
-    daire: str = Field(None, description="İlgili daire (Ör: 1, 2, Ceza, Hukuk vb.)"),
-    esas_no: str = Field(None, description="Esas numarası"),
-    karar_no: str = Field(None, description="Karar numarası")
+    kelime: str = Field("", description="Aranacak kelime veya kelime öbeği"),
+    daire: str = Field("", description="İlgili daire (Ör: 1, 2, Ceza, Hukuk vb.)"),
+    baslangic_tarihi: str = Field("", description="Başlangıç Tarihi (GG.AA.YYYY)"),
+    bitis_tarihi: str = Field("", description="Bitiş Tarihi (GG.AA.YYYY)"),
+    esas_yil: str = Field("", description="Esas Yıl"),
+    esas_ilk_sira_no: str = Field("", description="Esas İlk Sıra No"),
+    esas_son_sira_no: str = Field("", description="Esas Son Sıra No"),
+    karar_yil: str = Field("", description="Karar Yıl"),
+    karar_ilk_sira_no: str = Field("", description="Karar İlk Sıra No"),
+    karar_son_sira_no: str = Field("", description="Karar Son Sıra No"),
+    siralama: str = Field("3", description="Sıralama türü"),
+    siralama_direction: str = Field("asc", description="Sıralama yönü (asc/desc)"),
+    page_size: int = Field(10, description="Sayfa başı kayıt sayısı"),
+    page_number: int = Field(1, description="Sayfa numarası")
 ) -> str:
     """
-    Yargıtay kararlarında arama yapar ve sonuç listesini döndürür.
+    Yargıtay kararlarında detaylı arama yapar ve sonuç listesini döndürür.
     Bu listeye dayanarak spesifik kararların detayını okumak isterseniz 'get_case_detail' aracını çağırın.
     """
-    criteria = SearchCriteria(
+    criteria = DetailedSearchCriteria(
         kelime=kelime,
         daire=daire,
-        esas_no=esas_no,
-        karar_no=karar_no
+        baslangic_tarihi=baslangic_tarihi,
+        bitis_tarihi=bitis_tarihi,
+        esas_yil=esas_yil,
+        esas_ilk_sira_no=esas_ilk_sira_no,
+        esas_son_sira_no=esas_son_sira_no,
+        karar_yil=karar_yil,
+        karar_ilk_sira_no=karar_ilk_sira_no,
+        karar_son_sira_no=karar_son_sira_no,
+        siralama=siralama,
+        siralama_direction=siralama_direction,
+        page_size=page_size,
+        page_number=page_number
     )
     
     client = YargitayClient()
-    response = await client.search(criteria)
+    response = await client.detailed_search(criteria)
     
     if response.error:
         return f"Arama sırasında hata oluştu: {response.error}"

@@ -4,10 +4,25 @@ from typing import List, Optional, Any
 
 class SearchCriteria(BaseModel):
     kelime: Optional[str] = Field(None, description="Aranacak kelime veya kelime öbeği")
-    daire: Optional[str] = Field(None, description="İlgili daire (Ör: 1, 2, Ceza, Hukuk vb.)")
-    esas_no: Optional[str] = Field(None, description="Esas numarası")
-    karar_no: Optional[str] = Field(None, description="Karar numarası")
-    mahkeme: Optional[str] = Field(None, description="Mahkeme adı")
+    page_size: int = Field(10, description="Sayfa başı kayıt sayısı")
+    page_number: int = Field(1, description="Sayfa numarası")
+
+
+class DetailedSearchCriteria(BaseModel):
+    kelime: Optional[str] = Field("", description="Aranacak kelime")
+    daire: Optional[str] = Field("", description="İlgili daire")
+    baslangic_tarihi: Optional[str] = Field("", description="Başlangıç Tarihi (GG.AA.YYYY)")
+    bitis_tarihi: Optional[str] = Field("", description="Bitiş Tarihi (GG.AA.YYYY)")
+    esas_yil: Optional[str] = Field("", description="Esas Yıl")
+    esas_ilk_sira_no: Optional[str] = Field("", description="Esas İlk Sıra No")
+    esas_son_sira_no: Optional[str] = Field("", description="Esas Son Sıra No")
+    karar_yil: Optional[str] = Field("", description="Karar Yıl")
+    karar_ilk_sira_no: Optional[str] = Field("", description="Karar İlk Sıra No")
+    karar_son_sira_no: Optional[str] = Field("", description="Karar Son Sıra No")
+    siralama: str = Field("3", description="Sıralama türü")
+    siralama_direction: str = Field("asc", description="Sıralama yönü (asc/desc)")
+    page_size: int = Field(10, description="Sayfa başı kayıt sayısı")
+    page_number: int = Field(1, description="Sayfa numarası")
 
 
 class CaseResult(BaseModel):
