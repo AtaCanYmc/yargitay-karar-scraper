@@ -18,7 +18,16 @@ yargitay-karar-cli search --kelime "hırsızlık"
 yargitay-karar-cli search --kelime "dolandırıcılık" --page-size 5 --page-number 2
 ```
 
-## 2. Karar Detayı Okuma (`detail`)
+## 2. Detaylı Arama (`detailed-search`)
+
+Bu komut, dairesi, karar yılı, sıralama şekli gibi tüm gelişmiş Yargıtay kriterlerini kullanarak arama yapmanıza olanak tanır.
+
+**Örnek:** "1. Ceza Dairesi"nin 2018 yılındaki kararlarından "hırsızlık" kelimesi geçenleri aramak:
+```bash
+yargitay-karar-cli detailed-search --kelime "hırsızlık" --daire "1. Ceza Dairesi" --karar-yil "2018"
+```
+
+## 3. Karar Detayı Okuma (`detail`)
 
 Arama sonuçlarında (veya başka bir yerden) elde ettiğiniz Yargıtay Karar ID'si ile kararın saf metnini (HTML etiketlerinden arındırılmış haliyle) okuyabilirsiniz.
 

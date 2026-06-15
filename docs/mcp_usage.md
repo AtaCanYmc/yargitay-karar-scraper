@@ -42,9 +42,9 @@ Claude Desktop uygulamasını yeniden başlattığınızda sistem bu araçları 
 
 Kurulum tamamlandıktan sonra Claude ile sohbet ederken aşağıdaki gibi komutlar verebilirsiniz. Claude otomatik olarak arka planda MCP sunucunuza bağlanacak, arama yapacak ve sonucu size özetleyecektir.
 
-**Örnek Prompt 1 (Detaylı Arama):**
+**Örnek Prompt 1 (Gelişmiş/Detaylı Arama):**
 > "Bana Yargıtay 1. Ceza Dairesinin 2018 yılında vermiş olduğu 'kasten adam öldürme' ile ilgili kararları bulur musun?"
-*(Claude otomatik olarak `search_cases` aracını çağırıp daire ve karar_yil filtrelerini kullanır)*
+*(MCP sunucusuna entegre edilen `search_cases` aracı aslında arka planda **detailed_search** kullanır. Bu sayede Claude; daire, başlangıç/bitiş tarihleri, esas/karar yılları gibi spesifik filtreleri otomatik olarak kullanarak detaylı Yargıtay taraması yapar.)*
 
 **Örnek Prompt 2 (Metin İncelemesi):**
 > "Az önce bulduğun '415233000' ID'li kararın tam metnini oku ve bana bu kararda sanığın neden beraat ettiğini açıkla."

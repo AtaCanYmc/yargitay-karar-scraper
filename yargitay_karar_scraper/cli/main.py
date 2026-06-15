@@ -67,6 +67,74 @@ def search(kelime, page_size, page_number):
     asyncio.run(run_search())
 
 
+@cli.command(name="detailed-search")
+@click.option('--kelime', default="", help='Aranacak kelime')
+@click.option('--daire', default="", help='İlgili daire')
+@click.option('--baslangic-tarihi', default="", help='Başlangıç Tarihi (GG.AA.YYYY)')
+@click.option('--bitis-tarihi', default="", help='Bitiş Tarihi (GG.AA.YYYY)')
+@click.option('--esas-yil', default="", help='Esas Yıl')
+@click.option('--karar-yil', default="", help='Karar Yıl')
+@click.option('--siralama', default="3", help='Sıralama türü')
+@click.option('--siralama-direction', default="asc", help='Sıralama yönü (asc/desc)')
+@click.option('--page-size', default=10, help='Sayfa başı kayıt sayısı')
+@click.option('--page-number', default=1, help='Sayfa numarası')
+def detailed_search_cmd(kelime, daire, baslangic_tarihi, bitis_tarihi, esas_yil, karar_yil, siralama, siralama_direction, page_size, page_number):
+    """Gelişmiş kriterlerle detaylı arama yapar."""
+    from yargitay_karar_scraper.scraper import DetailedSearchCriteria
+    
+    criteria = DetailedSearchCriteria(
+        kelime=kelime,
+        daire=daire,
+        baslangic_tarihi=baslangic_tarihi,
+        bitis_tarihi=bitis_tarihi,
+        esas_yil=esas_yil,
+        karar_yil=karar_yil,
+        siralama=siralama,
+        siralama_direction=siralama_direction,
+        page_size=page_size,
+        page_number=page_number
+    )
+
+    console.print(f"[bold blue]Detaylı arama yapılıyor...[/bold blue]")
+
+    async def run_detailed_search():
+        client = YargitayClient()
+        response = await client.detailed_search(criteria)
+
+        if response.error:
+            console.print(f"[bold red]Arama sırasında hata oluştu:[/bold red] {response.error}")
+            return
+
+        if not response.results:
+            console.print("[yellow]Sonuç bulunamadı.[/yellow]")
+            return
+
+        table = Table(title=f"Arama Sonuçları (Toplam: {response.total_count})")
+
+        table.add_column("ID", style="cyan", no_wrap=True)
+        table.add_column("Daire", style="magenta")
+        table.add_column("Esas / Karar", style="green")
+        table.add_column("Tarih", style="yellow")
+        table.add_column("Özet", style="white")
+
+        for case in response.results:
+            esas_karar = f"{case.esas_no} / {case.karar_no}"
+            ozet_kisa = case.ozet[:50] + "..." if case.ozet and len(case.ozet) > 50 else (case.ozet or "-")
+            table.add_row(
+                case.id,
+                case.daire or "-",
+                esas_karar,
+                case.tarih or "-",
+                ozet_kisa
+            )
+
+        console.print(table)
+        console.print(
+            "\nDetay görmek için [bold green]yargitay-karar-cli detail --id <ID>[/bold green] komutunu kullanabilirsiniz.")
+
+    asyncio.run(run_detailed_search())
+
+
 @cli.command()
 @click.option('--id', required=True, help='Karar doküman ID\'si')
 def detail(id):
