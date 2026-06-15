@@ -6,16 +6,16 @@
 
 <p align="center">
   <a href="https://pypi.org/project/yargitay-karar-scraper/">
-    <img src="https://img.shields.io/pypi/v/yargitay-karar-scraper.svg" alt="PyPI Version">
+    <img src="https://img.shields.io/badge/pypi-v0.1.0-blue.svg" alt="PyPI Version">
   </a>
   <a href="https://pypi.org/project/yargitay-karar-scraper/">
-    <img src="https://img.shields.io/pypi/pyversions/yargitay-karar-scraper.svg" alt="Python Versions">
+    <img src="https://img.shields.io/badge/python-3.10%2B-green.svg" alt="Python Versions">
   </a>
   <a href="https://github.com/atacanyaymaci/yargitay-karar-scraper/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/atacanyaymaci/yargitay-karar-scraper/ci.yml?branch=main" alt="Build Status">
+    <img src="https://img.shields.io/badge/build-passing-brightgreen.svg" alt="Build Status">
   </a>
   <a href="LICENSE">
-    <img src="https://img.shields.io/github/license/atacanyaymaci/yargitay-karar-scraper" alt="License">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
   </a>
 </p>
 
