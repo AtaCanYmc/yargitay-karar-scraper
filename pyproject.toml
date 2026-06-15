@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "yargitay-karar-scraper"
+version = "0.1.0"
+description = "Yargıtay Karar Arama Scraper, CLI ve MCP Sunucusu"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Ata Can Yaymacı" }
+]
+dependencies = [
+    "httpx>=0.25.0",
+    "click>=8.1.7",
+    "rich>=13.7.0",
+    "pydantic>=2.5.3",
+    "mcp[cli]>=0.5.0"
+]
+
+[project.scripts]
+yargitay-karar-cli = "yargitay_karar_scraper.cli.main:cli"
+yargitay-karar-mcp = "yargitay_karar_scraper.mcp.server:main"
