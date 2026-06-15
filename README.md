@@ -22,16 +22,16 @@ pip install -e .
 
 ### CLI Kullanımı
 
-CLI aracını `yargitay-cli` komutu ile kullanabilirsiniz.
+CLI aracını `yargitay-karar-cli` komutu ile kullanabilirsiniz.
 
 Arama yapmak için:
 ```bash
-yargitay-cli search --kelime "hırsızlık" --daire "1"
+yargitay-karar-cli search --kelime "hırsızlık" --daire "1"
 ```
 
 Bir kararın detayını ID ile çekmek için:
 ```bash
-yargitay-cli detail --id "DOKUMAN_ID"
+yargitay-karar-cli detail --id "DOKUMAN_ID"
 ```
 
 ### MCP Sunucusu Olarak Kullanım
@@ -39,7 +39,7 @@ yargitay-cli detail --id "DOKUMAN_ID"
 Aşağıdaki komut MCP sunucusunu ayağa kaldırır ve LLM'lerin `search_cases` ile `get_case_detail` araçlarını kullanabilmesini sağlar:
 
 ```bash
-yargitay-mcp
+yargitay-karar-mcp
 ```
 
 Bunu Claude Desktop veya başka bir MCP destekleyen istemcinin `mcp_servers` konfigürasyonuna şu şekilde ekleyebilirsiniz:
@@ -47,7 +47,7 @@ Bunu Claude Desktop veya başka bir MCP destekleyen istemcinin `mcp_servers` kon
 ```json
 {
   "yargitay_scraper": {
-    "command": "yargitay-mcp",
+    "command": "yargitay-karar-mcp",
     "args": []
   }
 }
