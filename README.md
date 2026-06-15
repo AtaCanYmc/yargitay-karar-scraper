@@ -1,54 +1,137 @@
-# Yargıtay Karar Arama Scraper & MCP Sunucusu
+<p align="center">
+  <img src="images/logo.png" alt="Yargıtay Karar Arama Scraper Logo" width="250">
+</p>
 
-Yargıtay Karar Arama sitesinden veri çeken, bunu bir CLI üzerinden terminalde sunan ve bir MCP (Model Context Protocol) sunucusu olarak büyük dil modelleri ile etkileşime açan Python paketi.
+<h1 align="center">Yargıtay Karar Arama Scraper & MCP Sunucusu</h1>
 
-## Özellikler
+<p align="center">
+  <a href="https://pypi.org/project/yargitay-karar-scraper/">
+    <img src="https://img.shields.io/pypi/v/yargitay-karar-scraper.svg" alt="PyPI Version">
+  </a>
+  <a href="https://pypi.org/project/yargitay-karar-scraper/">
+    <img src="https://img.shields.io/pypi/pyversions/yargitay-karar-scraper.svg" alt="Python Versions">
+  </a>
+  <a href="https://github.com/atacanyaymaci/yargitay-karar-scraper/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/atacanyaymaci/yargitay-karar-scraper/ci.yml?branch=main" alt="Build Status">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/github/license/atacanyaymaci/yargitay-karar-scraper" alt="License">
+  </a>
+</p>
 
-- **Modüler Scraper:** `httpx` ve `pydantic` kullanılarak yazılmış temiz, nesne yönelimli ve tip güvenli scraper çekirdeği.
-- **CLI:** `click` ve `rich` tabanlı, kullanıcı dostu komut satırı arayüzü.
-- **MCP Sunucusu:** LLM'lerin (Claude vb.) kullanabilmesi için standart `mcp` arayüzü sağlayan sunucu.
+<p align="center">
+  <b>Yargıtay Karar Arama</b> sitesinden veri çeken, bunu bir komut satırı arayüzü (CLI) üzerinden renkli tablolarla sunan ve bir MCP (Model Context Protocol) sunucusu olarak Claude gibi Büyük Dil Modelleri (LLM) ile etkileşime açan modern ve modüler bir Python paketidir.
+</p>
 
-## Kurulum
+---
 
-Projeyi klonladıktan sonra dizine girin ve `pip` ile kurun:
+## ✨ Özellikler
+
+- **Modüler Scraper:** `httpx` ve `pydantic` kullanılarak yazılmış temiz, nesne yönelimli ve tip güvenli asenkron (async) scraper çekirdeği.
+- **Güçlü CLI:** `click` ve `rich` tabanlı, kullanıcı dostu ve interaktif görünüme sahip komut satırı arayüzü.
+- **MCP Sunucusu:** LLM'lerin (Claude, Cursor vb.) otomatik olarak Yargıtay'da araştırma yapabilmesi için standart `mcp` arayüzü sağlayan sunucu.
+- **Gelişmiş Arama:** Daire, esas yılı, karar yılı ve sıralama yönü gibi detaylı kriterlerle arama yapabilme yeteneği.
+- **Karar Temizleme:** HTML etiketleriyle dolu kararları otomatik olarak temizleyip saf ve okunaklı metin haline dönüştürme.
+
+---
+
+## 📸 Ekran Görüntüleri (CLI)
+
+<details open>
+  <summary><b>Terminal Arayüzü Ekran Görüntüleri (Görmek için tıklayın)</b></summary>
+  <br>
+  
+  <table>
+    <tr>
+      <td align="center">
+        <b>Basit Arama</b><br>
+        <img src="images/cli_search_example.png" alt="Basit Arama CLI">
+      </td>
+      <td align="center">
+        <b>Detaylı Arama</b><br>
+        <img src="images/cli_detailed_search_example.png" alt="Detaylı Arama CLI">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <b>Karar Detayı Okuma</b><br>
+        <img src="images/cli_karar_detail_example.png" alt="Karar Detayı Okuma CLI">
+      </td>
+    </tr>
+  </table>
+</details>
+
+---
+
+## 🚀 Kurulum
+
+PyPI üzerinden kararlı sürümü kurmak için (yakında):
 
 ```bash
-git clone <repo-url>
+pip install yargitay-karar-scraper
+```
+
+Kaynak koddan kurmak ve geliştirmek için:
+
+```bash
+git clone https://github.com/atacanyaymaci/yargitay-karar-scraper.git
 cd yargitay-karar-scraper
 pip install -e .
 ```
 
-## Kullanım
+---
 
-### CLI Kullanımı
+## 💻 Kullanım
 
-CLI aracını `yargitay-karar-cli` komutu ile kullanabilirsiniz.
+### 1. Komut Satırı Arayüzü (CLI)
 
-Arama yapmak için:
+CLI aracını `yargitay-karar-cli` komutu ile terminalden doğrudan kullanabilirsiniz.
+
+**Basit Arama:**
 ```bash
-yargitay-karar-cli search --kelime "hırsızlık" --daire "1"
+yargitay-karar-cli search --kelime "hırsızlık" --page-size 10
 ```
 
-Bir kararın detayını ID ile çekmek için:
+**Gelişmiş / Detaylı Arama:**
 ```bash
-yargitay-karar-cli detail --id "DOKUMAN_ID"
+yargitay-karar-cli detailed-search --kelime "ömer" --daire "1. Ceza Dairesi" --karar-yil "2018"
 ```
 
-### MCP Sunucusu Olarak Kullanım
+**Bir Kararın Tam Metnini Çekmek:**
+```bash
+yargitay-karar-cli detail --id "120109100"
+```
 
-Aşağıdaki komut MCP sunucusunu ayağa kaldırır ve LLM'lerin `search_cases` ile `get_case_detail` araçlarını kullanabilmesini sağlar:
+*Daha fazla detay için `docs/cli_usage.md` dosyasına göz atabilirsiniz.*
+
+### 2. MCP Sunucusu Olarak Kullanım
+
+Aşağıdaki komut MCP sunucusunu (stdio üzerinden) ayağa kaldırır ve LLM'lerin `search_cases` ile `get_case_detail` araçlarını kullanabilmesini sağlar:
 
 ```bash
 yargitay-karar-mcp
 ```
 
-Bunu Claude Desktop veya başka bir MCP destekleyen istemcinin `mcp_servers` konfigürasyonuna şu şekilde ekleyebilirsiniz:
+Bunu **Claude Desktop** uygulamanızın `claude_desktop_config.json` dosyasına şu şekilde ekleyebilirsiniz:
 
 ```json
 {
-  "yargitay_scraper": {
-    "command": "yargitay-karar-mcp",
-    "args": []
+  "mcpServers": {
+    "yargitay_kararlar": {
+      "command": "yargitay-karar-mcp",
+      "args": []
+    }
   }
 }
 ```
+
+Kurulumu yaptıktan sonra Claude'a doğrudan şu şekilde promptlar verebilirsiniz:
+> *"Bana Yargıtay 1. Ceza Dairesinin 2018 yılında vermiş olduğu 'kasten adam öldürme' ile ilgili kararları bulur musun?"*
+
+*Daha fazla detay ve kullanım senaryosu için `docs/mcp_usage.md` dosyasına göz atabilirsiniz.*
+
+---
+
+## 📄 Lisans
+
+Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır. Dilediğiniz gibi kullanabilir, değiştirebilir ve dağıtabilirsiniz.
