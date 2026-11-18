@@ -1,6 +1,6 @@
 from .scraper import YargitayClient, SearchCriteria, DetailedSearchCriteria, CaseResult, CaseDetail, SearchResponse
 
-__version__ = "0.1.4"  # x-release-please-version
+__version__ = "0.1.5"  # x-release-please-version
 
 __all__ = [
     "YargitayClient",
