@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B132B" />
+      <stop offset="50%" stop-color="#090E1A" />
+      <stop offset="100%" stop-color="#030712" />
+    </linearGradient>
+
+    <!-- Border Gradient -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="45%" stop-color="#0284C7" />
+      <stop offset="85%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#0B132B" />
+    </linearGradient>
+
+    <!-- Accent Beam Gradient -->
+    <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#E2E8F0" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+
+    <!-- Pan Fill Gradient -->
+    <linearGradient id="panGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.6" />
+    </linearGradient>
+
+    <!-- Pulse Glow -->
+    <radialGradient id="pulseGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.25" />
+      <stop offset="60%" stop-color="#0284C7" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Neon Glow Filter -->
+    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- 1. Outer Modern Squircle Container -->
+  <rect x="20" y="20" width="472" height="472" rx="104" fill="url(#bgGrad)" stroke="url(#borderGrad)" stroke-width="8" />
+
+  <!-- 2. Ambient Search Radar Glow -->
+  <circle cx="256" cy="256" r="160" fill="url(#pulseGlow)" />
+  <circle cx="256" cy="256" r="190" fill="none" stroke="#38BDF8" stroke-width="2" stroke-dasharray="6 10" stroke-opacity="0.2" />
+  <circle cx="256" cy="256" r="130" fill="none" stroke="#38BDF8" stroke-width="2" stroke-dasharray="4 8" stroke-opacity="0.25" />
+
+  <!-- 3. Precedent Data Nodes & Network Vectors -->
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 64 150 L 110 150 L 140 180" fill="none" stroke="#0284C7" stroke-width="2.5" stroke-opacity="0.4" />
+    <circle cx="64" cy="150" r="4.5" fill="#38BDF8" fill-opacity="0.8" />
+    <path d="M 64 360 L 115 360 L 145 330" fill="none" stroke="#0284C7" stroke-width="2.5" stroke-opacity="0.4" />
+    <circle cx="64" cy="360" r="4.5" fill="#38BDF8" fill-opacity="0.8" />
+
+    <path d="M 448 150 L 402 150 L 372 180" fill="none" stroke="#0284C7" stroke-width="2.5" stroke-opacity="0.4" />
+    <circle cx="448" cy="150" r="4.5" fill="#38BDF8" fill-opacity="0.8" />
+    <path d="M 448 360 L 397 360 L 367 330" fill="none" stroke="#0284C7" stroke-width="2.5" stroke-opacity="0.4" />
+    <circle cx="448" cy="360" r="4.5" fill="#38BDF8" fill-opacity="0.8" />
+  </g>
+
+  <!-- 4. Scales of Justice Base & Pedestal -->
+  <rect x="186" y="408" width="140" height="18" rx="9" fill="#1E293B" stroke="#38BDF8" stroke-width="3" stroke-opacity="0.8" />
+  <rect x="216" y="392" width="80" height="16" rx="8" fill="#0F172A" stroke="#0284C7" stroke-width="2.5" />
+
+  <!-- 5. Central Justice Column -->
+  <rect x="248" y="142" width="16" height="250" rx="8" fill="#F8FAFC" filter="url(#softGlow)" />
+  <rect x="249" y="144" width="14" height="246" rx="7" fill="#E2E8F0" />
+
+  <!-- 6. Finial Tip & Top Jewel -->
+  <circle cx="256" cy="116" r="16" fill="#38BDF8" filter="url(#neonGlow)" />
+  <circle cx="256" cy="116" r="10" fill="#FFFFFF" />
+  <polygon points="256,86 261,102 251,102" fill="#38BDF8" />
+
+  <!-- 7. Main Balance Beam -->
+  <rect x="106" y="152" width="300" height="14" rx="7" fill="url(#beamGrad)" filter="url(#softGlow)" />
+
+  <!-- 8. Central Pivot Ring & Crosshair -->
+  <circle cx="256" cy="159" r="24" fill="#0B132B" stroke="#38BDF8" stroke-width="5" />
+  <circle cx="256" cy="159" r="8" fill="#38BDF8" />
+  <circle cx="256" cy="159" r="3" fill="#FFFFFF" />
+
+  <!-- 9. Left Suspension Chains & Scale Pan -->
+  <g stroke-linecap="round">
+    <line x1="124" y1="166" x2="84" y2="284" stroke="#94A3B8" stroke-width="2.5" stroke-opacity="0.85" />
+    <line x1="124" y1="166" x2="164" y2="284" stroke="#94A3B8" stroke-width="2.5" stroke-opacity="0.85" />
+    <line x1="124" y1="166" x2="124" y2="284" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 4" stroke-opacity="0.6" />
+    <!-- Pan Rim & Bowl -->
+    <path d="M 72 284 C 72 334 176 334 176 284 Z" fill="url(#panGrad)" stroke="#38BDF8" stroke-width="3" filter="url(#softGlow)" />
+    <ellipse cx="124" cy="284" rx="52" ry="7" fill="#0F172A" stroke="#38BDF8" stroke-width="2" />
+    <!-- Data sparkle inside left pan -->
+    <circle cx="124" cy="298" r="5" fill="#FFFFFF" />
+  </g>
+
+  <!-- 10. Right Suspension Chains & Scale Pan -->
+  <g stroke-linecap="round">
+    <line x1="388" y1="166" x2="348" y2="284" stroke="#94A3B8" stroke-width="2.5" stroke-opacity="0.85" />
+    <line x1="388" y1="166" x2="428" y2="284" stroke="#94A3B8" stroke-width="2.5" stroke-opacity="0.85" />
+    <line x1="388" y1="166" x2="388" y2="284" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 4" stroke-opacity="0.6" />
+    <!-- Pan Rim & Bowl -->
+    <path d="M 336 284 C 336 334 440 334 440 284 Z" fill="url(#panGrad)" stroke="#38BDF8" stroke-width="3" filter="url(#softGlow)" />
+    <ellipse cx="388" cy="284" rx="52" ry="7" fill="#0F172A" stroke="#38BDF8" stroke-width="2" />
+    <!-- Data sparkle inside right pan -->
+    <circle cx="388" cy="298" r="5" fill="#FFFFFF" />
+  </g>
+
+  <!-- 11. Specular Highlights -->
+  <path d="M 40 100 A 70 70 0 0 1 110 40" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-opacity="0.4" />
+</svg>

@@ -1,31 +1,36 @@
-<p align="center">
-  <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/assets/images/logo.png" alt="Yargıtay Karar Arama Scraper Logo" width="220">
-</p>
-
-<h1 align="center">Yargıtay Karar Arama Scraper & MCP Sunucusu</h1>
-
-<p align="center">
-  <a href="https://pypi.org/project/yargitay-karar-scraper/">
-    <img src="https://img.shields.io/badge/pypi-v0.1.1-blue.svg" alt="PyPI Sürümü"> <!-- x-release-please-version -->
-  </a>
-  <a href="https://pypi.org/project/yargitay-karar-scraper/">
-    <img src="https://img.shields.io/badge/python-3.10%2B-green.svg" alt="Python Sürümleri">
-  </a>
-  <a href="https://github.com/AtaCanYmc/yargitay-karar-scraper/actions/workflows/ci.yml">
-    <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/actions/workflows/ci.yml/badge.svg" alt="CI Durumu">
-  </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="Lisans">
-  </a>
+<div align="center">
   <a href="https://atacanymc.github.io/yargitay-karar-scraper/">
-    <img src="https://img.shields.io/badge/docs-GitHub%20Pages-0284c7?logo=github&logoColor=white" alt="Dökümantasyon">
+    <img src="assets/images/logo.svg" alt="Yargıtay Karar Scraper Logo" width="160" height="160" />
   </a>
-</p>
 
-<p align="center">
-  Yargıtay Karar Arama portalı için asenkron Python istemcisi, Rich tabanlı CLI arayüzü ve Model Context Protocol (MCP) sunucusudur.<br>
-  <strong><a href="https://atacanymc.github.io/yargitay-karar-scraper/">Canlı Dökümantasyon ve İnteraktif Komut Sihirbazı &rarr;</a></strong>
-</p>
+  <h1>Yargıtay Karar Scraper</h1>
+
+  <p>
+    <b>T.C. Yargıtay Emsal Karar Portalı için Asenkron Python SDK, CLI ve FastMCP Sunucusu</b>
+  </p>
+
+  <p>
+    <a href="https://pypi.org/project/yargitay-karar-scraper/">
+      <img src="https://img.shields.io/badge/pypi-v0.1.1-blue.svg" alt="PyPI Sürümü"> <!-- x-release-please-version -->
+    </a>
+    <a href="https://pypi.org/project/yargitay-karar-scraper/">
+      <img src="https://img.shields.io/badge/python-3.10%2B-green.svg" alt="Python Sürümleri">
+    </a>
+    <a href="https://github.com/AtaCanYmc/yargitay-karar-scraper/actions/workflows/ci.yml">
+      <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/actions/workflows/ci.yml/badge.svg" alt="CI Durumu">
+    </a>
+    <a href="LICENSE">
+      <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="Lisans">
+    </a>
+    <a href="https://atacanymc.github.io/yargitay-karar-scraper/">
+      <img src="https://img.shields.io/badge/docs-GitHub%20Pages-0284c7?logo=github&logoColor=white" alt="Dökümantasyon">
+    </a>
+  </p>
+
+  <p>
+    <strong><a href="https://atacanymc.github.io/yargitay-karar-scraper/">Canlı Dökümantasyon ve İnteraktif Komut Sihirbazı &rarr;</a></strong>
+  </p>
+</div>
 
 ---
 
