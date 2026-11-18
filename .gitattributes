@@ -1,0 +1,27 @@
+# Auto detect text files and perform LF normalization on checkout
+* text=auto eol=lf
+
+# Explicit shell script normalization
+*.sh text eol=lf
+*.bash text eol=lf
+*.zsh text eol=lf
+
+# Documentation & Structured Data
+*.md text diff=markdown
+*.json text
+*.yml text
+*.yaml text
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text
+
+# Release archive exclusions
+.github export-ignore
+.gitignore export-ignore
+.gitattributes export-ignore
+.flake8 export-ignore

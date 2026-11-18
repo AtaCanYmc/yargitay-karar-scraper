@@ -1,118 +1,162 @@
 <p align="center">
-  <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/logo.png" alt="Yargıtay Karar Arama Scraper Logo" width="250">
+  <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/logo.png" alt="Yargıtay Karar Arama Scraper Logo" width="220">
 </p>
 
 <h1 align="center">Yargıtay Karar Arama Scraper & MCP Sunucusu</h1>
 
 <p align="center">
   <a href="https://pypi.org/project/yargitay-karar-scraper/">
-    <img src="https://img.shields.io/badge/pypi-v0.1.0-blue.svg" alt="PyPI Version">
+    <img src="https://img.shields.io/badge/pypi-v0.1.0-blue.svg" alt="PyPI Sürümü">
   </a>
   <a href="https://pypi.org/project/yargitay-karar-scraper/">
-    <img src="https://img.shields.io/badge/python-3.10%2B-green.svg" alt="Python Versions">
+    <img src="https://img.shields.io/badge/python-3.10%2B-green.svg" alt="Python Sürümleri">
   </a>
-  <a href="https://github.com/atacanyaymaci/yargitay-karar-scraper/actions">
-    <img src="https://img.shields.io/badge/build-passing-brightgreen.svg" alt="Build Status">
+  <a href="https://github.com/AtaCanYmc/yargitay-karar-scraper/actions/workflows/ci.yml">
+    <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/actions/workflows/ci.yml/badge.svg" alt="CI Durumu">
   </a>
   <a href="LICENSE">
-    <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="License">
+    <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="Lisans">
   </a>
 </p>
 
 <p align="center">
-  <b>Yargıtay Karar Arama</b> sitesinden veri çeken, bunu bir komut satırı arayüzü (CLI) üzerinden renkli tablolarla sunan ve bir MCP (Model Context Protocol) sunucusu olarak Claude gibi Büyük Dil Modelleri (LLM) ile etkileşime açan modern ve modüler bir Python paketidir.
+  Yargıtay Karar Arama portalı için asenkron Python istemcisi, Rich tabanlı CLI arayüzü ve Model Context Protocol (MCP) sunucusudur.
 </p>
 
 ---
 
-## ✨ Özellikler
+## İçindekiler
 
-- **Modüler Scraper:** `httpx` ve `pydantic` kullanılarak yazılmış temiz, nesne yönelimli ve tip güvenli asenkron (async) scraper çekirdeği.
-- **Güçlü CLI:** `click` ve `rich` tabanlı, kullanıcı dostu ve interaktif görünüme sahip komut satırı arayüzü.
-- **MCP Sunucusu:** LLM'lerin (Claude, Cursor vb.) otomatik olarak Yargıtay'da araştırma yapabilmesi için standart `mcp` arayüzü sağlayan sunucu.
-- **Gelişmiş Arama:** Daire, esas yılı, karar yılı ve sıralama yönü gibi detaylı kriterlerle arama yapabilme yeteneği.
-- **Karar Temizleme:** HTML etiketleriyle dolu kararları otomatik olarak temizleyip saf ve okunaklı metin haline dönüştürme.
-
----
-
-## 📸 Ekran Görüntüleri (CLI)
-
-<details open>
-  <summary><b>Terminal Arayüzü Ekran Görüntüleri (Görmek için tıklayın)</b></summary>
-  <br>
-  
-  <table>
-    <tr>
-      <td align="center">
-        <b>Basit Arama</b><br>
-        <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/cli_search_example.png" alt="Basit Arama CLI">
-      </td>
-      <td align="center">
-        <b>Detaylı Arama</b><br>
-        <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/cli_detailed_search_example.png" alt="Detaylı Arama CLI">
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" align="center">
-        <b>Karar Detayı Okuma</b><br>
-        <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/cli_karar_detail_example.png" alt="Karar Detayı Okuma CLI">
-      </td>
-    </tr>
-  </table>
-</details>
+- [Genel Bakış](#genel-bakış)
+- [Mimari](#mimari)
+- [Kurulum](#kurulum)
+- [Kullanım](#kullanım)
+  - [1. Komut Satırı Arayüzü (CLI)](#1-komut-satırı-arayüzü-cli)
+  - [2. Model Context Protocol (MCP) Sunucusu](#2-model-context-protocol-mcp-sunucusu)
+  - [3. Python Kütüphanesi Olarak Kullanım](#3-python-kütüphanesi-olarak-kullanım)
+- [Arayüz Önizlemeleri](#arayüz-önizlemeleri)
+- [Geliştirme ve Test](#geliştirme-ve-test)
+- [Proje Dizini Yapısı](#proje-dizini-yapısı)
+- [Lisans](#lisans)
 
 ---
 
-## 🚀 Kurulum
+## Genel Bakış
 
-PyPI üzerinden kararlı sürümü kurmak için (yakında):
+Bu paket, Yargıtay Karar Arama sistemi (`karararama.yargitay.gov.tr`) üzerinden içtihat araması yapılmasını ve kararların çekilmesini sağlar. Üç farklı arayüz sunar:
+
+1. **Python SDK:** `httpx` ve `pydantic` tabanlı, TLS doğrulamalı asenkron arama istemcisi.
+2. **CLI:** `click` ve `rich` tabanlı, sonuçları terminalde formatlanmış tablolarla gösteren komut satırı aracı.
+3. **MCP Sunucusu:** LLM ajanlarının (Claude Desktop, Cursor vb.) Yargıtay kararlarını doğrudan sorgulamasına olanak tanıyan `FastMCP` stdio sunucusu.
+
+---
+
+## Mimari
+
+Aşağıdaki şema sistem bileşenlerini ve veri akışını gösterir:
+
+```mermaid
+flowchart TD
+    subgraph ClientLayer["Kullanıcı Arayüzleri"]
+        CLI["CLI Arayüzü<br/>(yargitay-karar-cli)"]
+        MCP["MCP Sunucusu<br/>(yargitay-karar-mcp)"]
+        SDK["Python Kütüphanesi<br/>(YargitayClient)"]
+    end
+
+    subgraph CoreLayer["Çekirdek Kütüphane"]
+        Client["YargitayClient<br/>(httpx.AsyncClient + TLS)"]
+        Models["Pydantic Veri Modelleri<br/>(SearchCriteria, CaseResult)"]
+        Parser["İçerik Temizleme<br/>(HTML Strip + unescape)"]
+    end
+
+    subgraph External["Dış Sistem"]
+        API["Yargıtay Karar Portalı<br/>karararama.yargitay.gov.tr"]
+    end
+
+    CLI --> Client
+    MCP --> Client
+    SDK --> Client
+    Client --> Models
+    Client --> API
+    API --> Client
+    Client --> Parser
+```
+
+---
+
+## Kurulum
+
+### Kaynak Koddan Kurulum (Önerilen)
+
+```bash
+git clone https://github.com/AtaCanYmc/yargitay-karar-scraper.git
+cd yargitay-karar-scraper
+pip install -e .
+```
+
+### PyPI Üzerinden Kurulum
 
 ```bash
 pip install yargitay-karar-scraper
 ```
 
-Kaynak koddan kurmak ve geliştirmek için:
+Geliştirme ve test araçlarıyla birlikte kurmak için:
 
 ```bash
-git clone https://github.com/atacanyaymaci/yargitay-karar-scraper.git
-cd yargitay-karar-scraper
-pip install -e .
+pip install -e ".[test]"
 ```
 
 ---
 
-## 💻 Kullanım
+## Kullanım
 
 ### 1. Komut Satırı Arayüzü (CLI)
 
-CLI aracını `yargitay-karar-cli` komutu ile terminalden doğrudan kullanabilirsiniz.
+Paket kurulduğunda `yargitay-karar-cli` komutu terminalinizde kullanılabilir hale gelir.
 
-**Basit Arama:**
+#### Basit Arama (`search`)
+
 ```bash
 yargitay-karar-cli search --kelime "hırsızlık" --page-size 10
 ```
 
-**Gelişmiş / Detaylı Arama:**
+#### Detaylı Arama (`detailed-search`)
+
+Daire, karar yılı, esas yılı ve sıralama kriterlerine göre gelişmiş arama yapar:
+
 ```bash
-yargitay-karar-cli detailed-search --kelime "hırsızlık" --daire "1. Ceza Dairesi" --karar-yil "2018"
+yargitay-karar-cli detailed-search --kelime "dolandırıcılık" --daire "11. Ceza Dairesi" --karar-yil "2021"
 ```
 
-**Bir Kararın Tam Metnini Çekmek:**
+#### Karar Metni Görüntüleme (`detail`)
+
+Arama sonuçlarından elde edilen karar ID değeri ile tam metni getirir:
+
 ```bash
 yargitay-karar-cli detail --id "120109100"
 ```
 
-*Daha fazla detay için `docs/cli_usage.md` dosyasına göz atabilirsiniz.*
+Ayrıntılı CLI seçenekleri için [docs/cli_usage.md](docs/cli_usage.md) kılavuzuna bakın.
 
-### 2. MCP Sunucusu Olarak Kullanım
+---
 
-Aşağıdaki komut MCP sunucusunu (stdio üzerinden) ayağa kaldırır ve LLM'lerin `search_cases` ile `get_case_detail` araçlarını kullanabilmesini sağlar:
+### 2. Model Context Protocol (MCP) Sunucusu
 
-```bash
-yargitay-karar-mcp
-```
+`yargitay-karar-mcp` komutu standart girdi/çıktı (stdio) üzerinden çalışan bir FastMCP sunucusu başlatır.
 
-Bunu **Claude Desktop** uygulamanızın `claude_desktop_config.json` dosyasına şu şekilde ekleyebilirsiniz:
+#### Sunulan Araçlar (Tools)
+
+| Araç Adı | Açıklama | Başlıca Parametreler |
+| --- | --- | --- |
+| `search_cases` | Yargıtay sisteminde kriterlere göre detaylı arama yapar. | `kelime`, `daire`, `karar_yil`, `esas_yil`, `page_size` |
+| `get_case_detail` | Belirtilen karar ID'sine ait temizlenmiş tam metni getirir. | `document_id` |
+
+#### Claude Desktop Entegrasyonu
+
+Claude Desktop yapılandırma dosyanıza (`claude_desktop_config.json`) sunucuyu ekleyin:
+
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
 ```json
 {
@@ -125,37 +169,124 @@ Bunu **Claude Desktop** uygulamanızın `claude_desktop_config.json` dosyasına 
 }
 ```
 
-Kurulumu yaptıktan sonra Claude'a doğrudan şu şekilde promptlar verebilirsiniz:
-> *"Bana Yargıtay 1. Ceza Dairesinin 2018 yılında vermiş olduğu 'kasten adam öldürme' ile ilgili kararları bulur musun?"*
+Entegrasyon detayları ve örnek istemler için [docs/mcp_usage.md](docs/mcp_usage.md) kılavuzuna bakın.
 
-*Daha fazla detay ve kullanım senaryosu için `docs/mcp_usage.md` dosyasına göz atabilirsiniz.*
+---
 
 ### 3. Python Kütüphanesi Olarak Kullanım
 
-Eğer kendi Python projenizde doğrudan kod üzerinden kullanmak isterseniz, paketimizin asenkron (async) `YargitayClient` sınıfını kolayca projenize dahil edebilirsiniz:
+Asenkron `YargitayClient` sınıfı doğrudan Python uygulamalarına dahil edilebilir.
 
 ```python
 import asyncio
 from yargitay_karar_scraper.scraper import YargitayClient, SearchCriteria
 
 async def main():
-    client = YargitayClient()
+    # Varsayılan olarak TLS doğrulaması etkindir (verify=True)
+    client = YargitayClient(timeout=30)
     criteria = SearchCriteria(kelime="dolandırıcılık", page_size=5)
-    
+
     response = await client.search(criteria)
-    
-    if not response.error:
-        for case in response.results:
-            print(f"Karar ID: {case.id} | Esas/Karar: {case.esas_no} / {case.karar_no}")
+
+    if response.error:
+        print(f"Hata: {response.error}")
+        return
+
+    print(f"Toplam Kayıt: {response.total_count}")
+    for case in response.results:
+        print(f"[{case.id}] {case.daire} - Esas: {case.esas_no}, Karar: {case.karar_no}")
 
 if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-*Kendi projenize entegre etmeden önce daha fazla detaylı kod örneği incelemek için projedeki `examples/` klasörüne göz atabilirsiniz.*
+Çalıştırılabilir ek senaryolar için [examples/](examples/) dizinini inceleyebilirsiniz.
 
 ---
 
-## 📄 Lisans
+## Arayüz Önizlemeleri
 
-Bu proje [Apache-2.0 Lisansı](LICENSE) altında lisanslanmıştır. Dilediğiniz gibi kullanabilir, değiştirebilir ve dağıtabilirsiniz.
+<details>
+  <summary>Terminal Arayüzü Ekran Görüntüleri</summary>
+  <br>
+  <table>
+    <tr>
+      <td align="center">
+        <b>Basit Arama Sonucu</b><br>
+        <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/cli_search_example.png" alt="Basit Arama CLI">
+      </td>
+      <td align="center">
+        <b>Detaylı Arama Sonucu</b><br>
+        <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/cli_detailed_search_example.png" alt="Detaylı Arama CLI">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <b>Karar Detay Görünümü</b><br>
+        <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/cli_karar_detail_example.png" alt="Karar Detayı Okuma CLI">
+      </td>
+    </tr>
+  </table>
+</details>
+
+---
+
+## Geliştirme ve Test
+
+Projeyi yerel ortamda çalıştırmak, lint ve test kontrollerini gerçekleştirmek için:
+
+```bash
+# Bağımlılıkları kurma
+pip install -e .
+pip install flake8 pytest pytest-asyncio
+
+# Linter kontrolü
+flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+# Birim testleri çalıştırma
+pytest
+
+# Paket derleme kontrolü
+pip install build
+python -m build
+```
+
+---
+
+## Proje Dizini Yapısı
+
+```text
+.
+├── .github/
+│   └── workflows/
+│       ├── ci.yml            # CI test ve linter iş akışı
+│       └── publish.yml       # PyPI yayınlama iş akışı
+├── docs/
+│   ├── cli_usage.md          # CLI komut kılavuzu
+│   └── mcp_usage.md          # MCP yapılandırma kılavuzu
+├── examples/
+│   ├── basic_search.py       # Basit arama örneği
+│   ├── detailed_search.py    # Gelişmiş arama örneği
+│   └── get_document.py       # Karar metni çekme örneği
+├── tests/
+│   └── test_client.py        # Asenkron birim testleri
+├── yargitay_karar_scraper/
+│   ├── cli/
+│   │   └── main.py           # Click ve Rich tabanlı CLI
+│   ├── mcp/
+│   │   └── server.py         # FastMCP stdio sunucusu
+│   └── scraper/
+│       ├── client.py         # Asenkron HTTP istemcisi (httpx)
+│       └── models.py         # Pydantic veri modelleri
+├── .flake8                   # Linter kuralları
+├── .gitignore                # Git yok sayma kuralları
+├── LICENSE                   # Apache-2.0 lisans metni
+├── pyproject.toml            # Paket yapılandırması
+└── README.md                 # Proje dokümantasyonu
+```
+
+---
+
+## Lisans
+
+Bu proje [Apache-2.0](LICENSE) lisansı ile dağıtılmaktadır.

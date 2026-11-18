@@ -1,0 +1,50 @@
+name: Hata Bildirimi (Bug Report)
+description: Tekrarlanabilir bir hatayı veya beklenmeyen davranışı bildirin
+title: "fix: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Lütfen yeni bir bildirim açmadan önce mevcut açık konuları kontrol edin.
+        Güvenlik açıkları için [SECURITY.md](../../SECURITY.md) belgesindeki yönergeleri izleyin.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Hata Açıklaması
+      description: Karşılaştığınız hatayı kısa ve net bir şekilde açıklayın.
+      placeholder: Ne olduğunu belirtin.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Hatayı Yeniden Üretme Adımları
+      description: Davranışı adım adım yeniden üretmek için çalıştırılan komutlar ve girdiler.
+      placeholder: |
+        1. 'yargitay-karar-cli search ...' komutunu çalıştırın.
+        2. Dönen çıktıyı inceleyin.
+        3. Hatayı gözlemleyin.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Beklenen Davranış
+      description: Normal şartlarda ne olmasını bekliyordunuz?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Terminal Çıktısı veya Hata Logları
+      description: Varsa hata yığını veya terminal çıktısını yapıştırın.
+      render: shell
+  - type: input
+    id: environment
+    attributes:
+      label: Çalışma Ortamı
+      description: İşletim sistemi, Python sürümü ve paket sürümü.
+      placeholder: macOS 14.5, Python 3.11, yargitay-karar-scraper 0.1.0
+    validations:
+      required: true

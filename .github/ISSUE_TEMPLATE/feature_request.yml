@@ -1,0 +1,37 @@
+name: Özellik İsteği (Feature Request)
+description: Yeni bir yetenek, CLI komutu veya iyileştirme önerin
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Lütfen bu önerinin daha önce açılıp açılmadığını kontrol edin.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem veya İhtiyaç
+      description: Bu özelliğin çözmeyi hedeflediği teknik sınırlamayı veya ihtiyacı açıklayın.
+      placeholder: Şöyle bir senaryoda şu eksiklikle karşılaşıyorum...
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Önerilen Çözüm
+      description: İstenen davranış veya API değişikliği hakkında detay verin.
+      placeholder: Şu komut veya parametre desteği eklenebilir...
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Değerlendirilen Alternatifler
+      description: Varsa düşündüğünüz alternatif yaklaşımlar veya geçici çözümler.
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Katkıcı Kontrol Listesi
+      options:
+        - label: Benzer bir istek veya PR olmadığını kontrol ettim.
+          required: true

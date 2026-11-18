@@ -1,52 +1,92 @@
-# Yargıtay Karar Arama CLI Kullanım Örnekleri
+# Yargıtay Karar Arama CLI Kullanım Kılavuzu
 
-Bu dokümanda `yargitay-karar-cli` komut satırı aracının nasıl kullanılacağına dair örnekler yer almaktadır.
+`yargitay-karar-cli`, Yargıtay Karar Arama sistemine terminal üzerinden erişim sağlayan komut satırı arayüzüdür.
 
-Proje bağımlılıklarını kurduktan sonra (`pip install -e .` çalıştırarak) terminalinizde doğrudan `yargitay-karar-cli` komutunu kullanabilirsiniz.
+---
 
-## 1. Basit Arama (`search`)
+## Kurulum ve Başlangıç
 
-Bu komut, bir kelime öbeği üzerinden arama yapmanızı ve sayfalandırma seçeneklerini kontrol etmenizi sağlar.
+Paket kurulduktan sonra CLI komutları doğrudan terminalden çalıştırılabilir:
 
-**Örnek:** Sadece "hırsızlık" kelimesi geçen kararları aramak:
 ```bash
-yargitay-karar-cli search --kelime "hırsızlık"
+# Geliştirici modunda kurulum
+pip install -e .
+
+# Genel yardım ekranı
+yargitay-karar-cli --help
 ```
 
-**Örnek:** Sayfa başı 5 kayıt getirecek şekilde, 2. sayfadaki kararları aramak:
+---
+
+## Komutlar ve Seçenekler
+
+### 1. Basit Arama (`search`)
+
+Tek bir kelime veya kelime öbeği üzerinden arama yapar.
+
 ```bash
-yargitay-karar-cli search --kelime "dolandırıcılık" --page-size 5 --page-number 2
+yargitay-karar-cli search --kelime "hırsızlık" --page-size 10 --page-number 1
 ```
 
-## 2. Detaylı Arama (`detailed-search`)
+#### Parametreler
 
-Bu komut, dairesi, karar yılı, sıralama şekli gibi tüm gelişmiş Yargıtay kriterlerini kullanarak arama yapmanıza olanak tanır.
+| Parametre | Tip | Zorunlu | Varsayılan | Açıklama |
+| --- | --- | --- | --- | --- |
+| `--kelime` | Metin | Evet | - | Aranacak anahtar kelime veya kelime öbeği. |
+| `--page-size` | Tamsayı | Hayır | `10` | Sayfa başına listelenecek karar sayısı. |
+| `--page-number` | Tamsayı | Hayır | `1` | Getirilecek sayfa numarası. |
 
-**Örnek:** "1. Ceza Dairesi"nin 2018 yılındaki kararlarından "hırsızlık" kelimesi geçenleri aramak:
+---
+
+### 2. Gelişmiş Arama (`detailed-search`)
+
+Daire, tarih aralığı, esas/karar yılları ve sıralama ölçütlerine göre filtreleme yapar.
+
 ```bash
-yargitay-karar-cli detailed-search --kelime "hırsızlık" --daire "1. Ceza Dairesi" --karar-yil "2018"
+yargitay-karar-cli detailed-search \
+  --kelime "dolandırıcılık" \
+  --daire "11. Ceza Dairesi" \
+  --karar-yil "2021" \
+  --siralama "3" \
+  --siralama-direction "desc" \
+  --page-size 10
 ```
 
-## 3. Karar Detayı Okuma (`detail`)
+#### Parametreler
 
-Arama sonuçlarında (veya başka bir yerden) elde ettiğiniz Yargıtay Karar ID'si ile kararın saf metnini (HTML etiketlerinden arındırılmış haliyle) okuyabilirsiniz.
+| Parametre | Tip | Zorunlu | Varsayılan | Açıklama |
+| --- | --- | --- | --- | --- |
+| `--kelime` | Metin | Hayır | `""` | Aranacak anahtar kelime. |
+| `--daire` | Metin | Hayır | `""` | İlgili Yargıtay dairesi (ör. `1. Ceza Dairesi`, `4. Hukuk Dairesi`). |
+| `--baslangic-tarihi` | Metin | Hayır | `""` | Karar başlangıç tarihi (`GG.AA.YYYY`). |
+| `--bitis-tarihi` | Metin | Hayır | `""` | Karar bitiş tarihi (`GG.AA.YYYY`). |
+| `--esas-yil` | Metin | Hayır | `""` | Esas dosya yılı (ör. `2020`). |
+| `--karar-yil` | Metin | Hayır | `""` | Karar yılı (ör. `2021`). |
+| `--siralama` | Metin | Hayır | `"3"` | Sıralama ölçütü kodu (`3`: Karar Tarihi). |
+| `--siralama-direction` | Metin | Hayır | `"asc"` | Sıralama yönü (`asc` veya `desc`). |
+| `--page-size` | Tamsayı | Hayır | `10` | Sayfa başına listelenecek kayıt sayısı. |
+| `--page-number` | Tamsayı | Hayır | `1` | Getirilecek sayfa numarası. |
 
-**Örnek:** ID'si `120109100` olan kararın metnini getirmek:
+---
+
+### 3. Karar Detayı Görüntüleme (`detail`)
+
+Arama çıktısında listelenen karar ID numarasını kullanarak kararın tam metnini terminalde Rich paneli içinde gösterir. Karar metni HTML etiketlerinden arındırılmış ve karakter kodlaması çözülmüş olarak sunulur.
+
 ```bash
 yargitay-karar-cli detail --id "120109100"
 ```
 
-## Yardım (Help) Dokümantasyonu
+#### Parametreler
 
-Kullanabileceğiniz tüm alt komutları ve argümanları görmek için `--help` bayrağını ekleyin:
+| Parametre | Tip | Zorunlu | Açıklama |
+| --- | --- | --- | --- |
+| `--id` | Metin | Evet | Görüntülenecek kararın Yargıtay sistemindeki benzersiz doküman ID değeri. |
 
-```bash
-# Ana menü yardımı
-yargitay-karar-cli --help
+---
 
-# Arama komutu yardımı
-yargitay-karar-cli search --help
+## Hata Yönetimi ve Çıktı Formatı
 
-# Detay komutu yardımı
-yargitay-karar-cli detail --help
-```
+- Ağ bağlantısı veya sunucu kaynaklı hatalarda hata mesajı standart hata kanalına kırmızı renkle basılır.
+- Arama sonuçları bulunamadığında sarı bilgilendirme mesajı verilir.
+- Çıktılar ANSI destekli terminallerde otomatik olarak boyutlandırılan Rich tabloları halinde gösterilir.

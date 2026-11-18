@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Güvenlik Bildirimi (Security Policy)
+    url: https://github.com/AtaCanYmc/yargitay-karar-scraper/security/policy
+    about: Güvenlik açıklarını lütfen doğrudan veya gizli güvenlik bildirimi kanalıyla iletin.

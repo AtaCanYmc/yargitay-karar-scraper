@@ -1,27 +1,76 @@
-# Yargıtay Karar Arama MCP Sunucusu Kullanımı
+# Yargıtay Karar Arama MCP Sunucusu Kılavuzu
 
-Model Context Protocol (MCP), Claude ve benzeri Yapay Zeka (LLM) asistanlarının dış sistemlere entegre olmasını sağlayan açık bir standarttır. Bu paket sayesinde LLM'nize doğrudan Yargıtay kararlarında arama yapma ve okuma yeteneği kazandırabilirsiniz.
+Model Context Protocol (MCP), Yapay Zeka istemcilerinin dış araçlar ve veri kaynakları ile standart JSON-RPC üzerinden haberleşmesini sağlayan açık protokoldür. Bu paket, Yargıtay kararlarını LLM ajanlarının doğrudan sorgulamasına imkan veren yerel bir stdio MCP sunucusu sağlar.
 
-## 1. MCP Sunucusunu Başlatmak
+---
 
-Komut satırından standart girdi/çıktı (stdio) üzerinden MCP sunucusunu ayağa kaldırmak çok basittir:
+## Sunucuyu Başlatma
+
+Sunucu, Python paketinin giriş noktası olan `yargitay-karar-mcp` komutuyla stdio üzerinden çalışır:
 
 ```bash
 yargitay-karar-mcp
 ```
-*(Bu komut arka planda çalışıp standart JSON-RPC protokolü üzerinden dinlemeye başlar. İnsanların doğrudan okuması için değil, LLM istemcileri için tasarlanmıştır.)*
 
-## 2. Claude Desktop ile Entegrasyon
+Bu süreç terminale doğrudan okunabilir metin basmaz. JSON-RPC protokolü üzerinden stdin ve stdout kanallarını dinler.
 
-Claude Desktop uygulamasına bu aracı öğretmek için konfigürasyon dosyanıza eklemeniz gereklidir.
+---
 
-**MacOS için yapılandırma dosyası yolu:** 
-`~/Library/Application Support/Claude/claude_desktop_config.json`
+## Sunulan Araçlar (Tools)
 
-**Windows için yapılandırma dosyası yolu:**
-`%APPDATA%\Claude\claude_desktop_config.json`
+Sunucu iki ana araç sunar:
 
-Konfigürasyon dosyasına şu bloğu ekleyin (eğer dosya yoksa yeni bir JSON olarak oluşturun):
+### 1. `search_cases`
+
+Yargıtay karar arama servisinde detaylı kriterlere göre sorgulama yapar ve eşleşen kararları özet metin halinde döndürür.
+
+#### Girdi Parametreleri
+
+| Parametre | Tip | Varsayılan | Açıklama |
+| --- | --- | --- | --- |
+| `kelime` | `string` | `""` | Aranacak kelime veya kelime öbeği. |
+| `daire` | `string` | `""` | Yargıtay dairesi (ör. `1. Ceza Dairesi`). |
+| `baslangic_tarihi` | `string` | `""` | Başlangıç tarihi (`GG.AA.YYYY`). |
+| `bitis_tarihi` | `string` | `""` | Bitiş tarihi (`GG.AA.YYYY`). |
+| `esas_yil` | `string` | `""` | Esas dosya yılı. |
+| `karar_yil` | `string` | `""` | Karar yılı. |
+| `siralama` | `string` | `"3"` | Sıralama ölçütü kodu. |
+| `siralama_direction` | `string` | `"asc"` | Sıralama yönü (`asc` veya `desc`). |
+| `page_size` | `integer` | `10` | Sayfa başı kayıt sayısı. |
+| `page_number` | `integer` | `1` | Sayfa numarası. |
+
+#### Çıktı Formatı
+
+Her karar kaydı için `ID`, `Daire`, `Esas/Karar`, `Tarih` ve `Özet` alanlarını içeren yapılandırılmış metin bloğu döndürülür.
+
+---
+
+### 2. `get_case_detail`
+
+Verilen karar ID numarasına ait kararın tam metnini döndürür. HTML etiketleri temizlenmiş ve karakter kodlaması çözülmüş metin içerir.
+
+#### Girdi Parametreleri
+
+| Parametre | Tip | Zorunlu | Açıklama |
+| --- | --- | --- | --- |
+| `document_id` | `string` | Evet | Karar doküman ID numarası. |
+
+#### Çıktı Formatı
+
+`Karar ID: <id>\n\n<tam metin>` biçiminde düz metin döndürülür.
+
+---
+
+## İstemci Entegrasyonları
+
+### Claude Desktop Yapılandırması
+
+Claude Desktop uygulamasının MCP sunucusunu tanıması için işletim sisteminize uygun yapılandırma dosyasını düzenleyin:
+
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+Yapılandırma dosyasına aşağıdaki sunucu tanımını ekleyin:
 
 ```json
 {
@@ -34,18 +83,29 @@ Konfigürasyon dosyasına şu bloğu ekleyin (eğer dosya yoksa yeni bir JSON ol
 }
 ```
 
-*Not: Eğer `yargitay-karar-mcp` komutu ortam değişkenlerinizde (PATH) bulunamıyorsa, "command" kısmına python sanal ortamınızdaki (venv) tam yolunu yazabilirsiniz.*
+Eğer komut global PATH içinde bulunamıyorsa sanal ortamdaki mutlak çalıştırılabilir dosya yolunu belirtin:
 
-Claude Desktop uygulamasını yeniden başlattığınızda sistem bu araçları (Tools) otomatik tanıyacaktır.
+```json
+{
+  "mcpServers": {
+    "yargitay_kararlar": {
+      "command": "/Users/kullanici/proje/.venv/bin/yargitay-karar-mcp",
+      "args": []
+    }
+  }
+}
+```
 
-## 3. Claude ile Örnek Etkileşimler (Promptlar)
+---
 
-Kurulum tamamlandıktan sonra Claude ile sohbet ederken aşağıdaki gibi komutlar verebilirsiniz. Claude otomatik olarak arka planda MCP sunucunuza bağlanacak, arama yapacak ve sonucu size özetleyecektir.
+## Örnek Ajan İstemleri
 
-**Örnek Prompt 1 (Gelişmiş/Detaylı Arama):**
-> "Bana Yargıtay 1. Ceza Dairesinin 2018 yılında vermiş olduğu 'kasten adam öldürme' ile ilgili kararları bulur musun?"
-*(MCP sunucusuna entegre edilen `search_cases` aracı aslında arka planda **detailed_search** kullanır. Bu sayede Claude; daire, başlangıç/bitiş tarihleri, esas/karar yılları gibi spesifik filtreleri otomatik olarak kullanarak detaylı Yargıtay taraması yapar.)*
+Entegrasyon tamamlandıktan sonra LLM istemcinize doğal dille sorgu verebilirsiniz:
 
-**Örnek Prompt 2 (Metin İncelemesi):**
-> "Az önce bulduğun '415233000' ID'li kararın tam metnini oku ve bana bu kararda sanığın neden beraat ettiğini açıkla."
-*(Claude otomatik olarak `get_case_detail` aracını çağırır ve HTML'den arındırılmış saf metni okuyarak analiz yapar)*
+1. **Arama İstemi:**
+   > "Yargıtay 4. Hukuk Dairesinin 2022 yılındaki manevi tazminat kararlarından ilk 5 tanesini listeler misin?"
+   *Ajan `search_cases` aracını `daire="4. Hukuk Dairesi"`, `karar_yil="2022"`, `kelime="manevi tazminat"`, `page_size=5` argümanlarıyla çağırır.*
+
+2. **Detay ve İnceleme İstemi:**
+   > "Yukarıdaki listede yer alan 264811900 ID'li kararın tam metnini çekip bozma gerekçesini açıklar mısın?"
+   *Ajan `get_case_detail` aracını `document_id="264811900"` argümanıyla çağırır ve dönen içtihadı analiz eder.*
