@@ -1,39 +1,25 @@
 name: Publish to PyPI
 
 on:
-  release:
-    types: [published]
+  workflow_call:
 
 jobs:
   pypi-publish:
     name: Build and publish Python package
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/yargitay-karar-scraper/
     permissions:
-      id-token: write  # PyPI Trusted Publishing için gerekli
+      id-token: write
       contents: read
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - name: Download distribution artifacts
+      uses: actions/download-artifact@v4
       with:
-        python-version: "3.10"
-        
-    - name: Install pypa/build
-      run: >-
-        python -m
-        pip install
-        build
-        --user
-        
-    - name: Build a binary wheel and a source tarball
-      run: >-
-        python -m
-        build
-        --sdist
-        --wheel
-        --outdir dist/
-        
+        name: python-package-distributions
+        path: dist/
+
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
