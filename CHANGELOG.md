@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/AtaCanYmc/yargitay-karar-scraper/compare/v0.1.2...v0.1.3) (2026-11-18)
+
+
+### Bug Fixes
+
+* **ci:** add pypi environment to release-please publish job for trusted publishing ([9720fcd](https://github.com/AtaCanYmc/yargitay-karar-scraper/commit/9720fcd24772e4a48e3436bf9f675a3e9114a3a8))
+* **docs:** fix PyPI badge 404 by using live dynamic shields endpoint and fix image paths ([815a1bb](https://github.com/AtaCanYmc/yargitay-karar-scraper/commit/815a1bb03c0068eebdbea741ccf8c7de3996dca9))
+
 ## [0.1.2](https://github.com/AtaCanYmc/yargitay-karar-scraper/compare/v0.1.1...v0.1.2) (2026-11-18)
 
 

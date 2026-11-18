@@ -3,7 +3,7 @@ class YargitayKararScraper < Formula
 
   desc "Yargıtay Karar Arama CLI ve FastMCP Sunucusu"
   homepage "https://github.com/AtaCanYmc/yargitay-karar-scraper"
-  url "https://github.com/AtaCanYmc/yargitay-karar-scraper/archive/refs/tags/v0.1.2.tar.gz" # x-release-please-version
+  url "https://github.com/AtaCanYmc/yargitay-karar-scraper/archive/refs/tags/v0.1.3.tar.gz" # x-release-please-version
   sha256 "f3e36a74b84bd386b2f72e790520376fa4f77c6aa5e58c972a2d69756be31ef4"
   license "Apache-2.0"
   head "https://github.com/AtaCanYmc/yargitay-karar-scraper.git", branch: "main"
