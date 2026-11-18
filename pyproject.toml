@@ -23,3 +23,7 @@ dependencies = [
 [project.scripts]
 yargitay-karar-cli = "yargitay_karar_scraper.cli.main:cli"
 yargitay-karar-mcp = "yargitay_karar_scraper.mcp.server:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

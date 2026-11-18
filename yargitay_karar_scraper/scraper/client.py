@@ -1,6 +1,8 @@
+import html
 import httpx
 import logging
-from typing import Dict, Any
+import ssl
+from typing import Dict, Any, Union
 import re
 from .models import SearchCriteria, DetailedSearchCriteria, SearchResponse, CaseResult, CaseDetail
 
@@ -15,7 +17,7 @@ class YargitayClient:
     DETAIL_SEARCH_ENDPOINT = f"{BASE_URL}/aramadetaylist"
     DOCUMENT_ENDPOINT = f"{BASE_URL}/getDokuman"
 
-    def __init__(self, timeout: int = 30):
+    def __init__(self, timeout: int = 30, verify: Union[bool, str, ssl.SSLContext] = True):
         # Gerçekçi bir tarayıcı simülasyonu için User-Agent
         self.headers = {
             "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -27,6 +29,7 @@ class YargitayClient:
             "Content-Type": "application/json"
         }
         self.timeout = timeout
+        self.verify = verify
 
     async def search(self, criteria: SearchCriteria) -> SearchResponse:
         """Belirtilen kriterlere göre kararları arar."""
@@ -42,7 +45,7 @@ class YargitayClient:
         payload = {"data": data_payload}
 
         try:
-            async with httpx.AsyncClient(timeout=self.timeout, headers=self.headers, verify=False) as client:
+            async with httpx.AsyncClient(timeout=self.timeout, headers=self.headers, verify=self.verify) as client:
                 response = await client.post(self.SEARCH_ENDPOINT, json=payload)
                 response.raise_for_status()
 
@@ -101,7 +104,7 @@ class YargitayClient:
         payload = {"data": data_payload}
 
         try:
-            async with httpx.AsyncClient(timeout=self.timeout, headers=self.headers, verify=False) as client:
+            async with httpx.AsyncClient(timeout=self.timeout, headers=self.headers, verify=self.verify) as client:
                 response = await client.post(self.DETAIL_SEARCH_ENDPOINT, json=payload)
                 response.raise_for_status()
 
@@ -139,7 +142,7 @@ class YargitayClient:
         params = {"id": document_id}
 
         try:
-            async with httpx.AsyncClient(timeout=self.timeout, headers=self.headers, verify=False) as client:
+            async with httpx.AsyncClient(timeout=self.timeout, headers=self.headers, verify=self.verify) as client:
                 response = await client.get(self.DOCUMENT_ENDPOINT, params=params)
                 response.raise_for_status()
 
@@ -147,7 +150,8 @@ class YargitayClient:
                 html_content = data.get("data", "") if isinstance(data, dict) else response.text
 
                 # HTML etiketlerini temizleyip okunabilir metin haline getiriyoruz
-                text_content = re.sub(r'<[^>]+>', ' ', html_content)
+                text_content = re.sub(r'<[^>]+>', ' ', html_content or "")
+                text_content = html.unescape(text_content)
                 text_content = re.sub(r'\s+', ' ', text_content).strip()
 
                 return CaseDetail(id=document_id, icerik=text_content, raw=html_content)
