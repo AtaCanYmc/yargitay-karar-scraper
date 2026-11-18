@@ -4,12 +4,14 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 
+from yargitay_karar_scraper import __version__
 from yargitay_karar_scraper.scraper import YargitayClient, SearchCriteria
 
 console = Console()
 
 
 @click.group()
+@click.version_option(__version__, "-v", "--version", message="%(prog)s %(version)s")
 def cli():
     """Yargıtay Karar Arama CLI aracı"""
     pass
@@ -27,7 +29,7 @@ def search(kelime, page_size, page_number):
         page_number=page_number
     )
 
-    console.print(f"[bold blue]Arama yapılıyor...[/bold blue]")
+    console.print("[bold blue]Arama yapılıyor...[/bold blue]")
 
     async def run_search():
         client = YargitayClient()
@@ -78,10 +80,13 @@ def search(kelime, page_size, page_number):
 @click.option('--siralama-direction', default="asc", help='Sıralama yönü (asc/desc)')
 @click.option('--page-size', default=10, help='Sayfa başı kayıt sayısı')
 @click.option('--page-number', default=1, help='Sayfa numarası')
-def detailed_search_cmd(kelime, daire, baslangic_tarihi, bitis_tarihi, esas_yil, karar_yil, siralama, siralama_direction, page_size, page_number):
+def detailed_search_cmd(
+    kelime, daire, baslangic_tarihi, bitis_tarihi, esas_yil, karar_yil,
+    siralama, siralama_direction, page_size, page_number
+):
     """Gelişmiş kriterlerle detaylı arama yapar."""
     from yargitay_karar_scraper.scraper import DetailedSearchCriteria
-    
+
     criteria = DetailedSearchCriteria(
         kelime=kelime,
         daire=daire,
@@ -95,7 +100,7 @@ def detailed_search_cmd(kelime, daire, baslangic_tarihi, bitis_tarihi, esas_yil,
         page_number=page_number
     )
 
-    console.print(f"[bold blue]Detaylı arama yapılıyor...[/bold blue]")
+    console.print("[bold blue]Detaylı arama yapılıyor...[/bold blue]")
 
     async def run_detailed_search():
         client = YargitayClient()

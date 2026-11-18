@@ -49,7 +49,7 @@ class YargitayClient:
                 response = await client.post(self.SEARCH_ENDPOINT, json=payload)
                 response.raise_for_status()
 
-                # Yanıtın JSON olduğunu varsayıyoruz. 
+                # Yanıtın JSON olduğunu varsayıyoruz.
                 # Gerçekte Yargıtay yapısı HTML dönebilir, eğer öyleyse BeautifulSoup eklenip parse edilmeli.
                 # Şimdilik JSON modeline uygun varsayarak örnekleme yapıyoruz.
                 data = response.json()

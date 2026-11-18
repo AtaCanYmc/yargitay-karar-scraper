@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://pypi.org/project/yargitay-karar-scraper/">
-    <img src="https://img.shields.io/badge/pypi-v0.1.1-blue.svg" alt="PyPI Sürümü">
+    <img src="https://img.shields.io/badge/pypi-v0.1.1-blue.svg" alt="PyPI Sürümü"> <!-- x-release-please-version -->
   </a>
   <a href="https://pypi.org/project/yargitay-karar-scraper/">
     <img src="https://img.shields.io/badge/python-3.10%2B-green.svg" alt="Python Sürümleri">

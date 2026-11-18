@@ -1,0 +1,46 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "package-name": "yargitay-karar-scraper",
+      "changelog-path": "CHANGELOG.md",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true,
+      "draft": false,
+      "prerelease": false,
+      "include-component-in-tag": false,
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "yargitay_karar_scraper/__init__.py"
+        },
+        {
+          "type": "generic",
+          "path": "Formula/yargitay-karar-scraper.rb"
+        },
+        {
+          "type": "generic",
+          "path": "README.md"
+        },
+        {
+          "type": "generic",
+          "path": ".github/ISSUE_TEMPLATE/bug_report.yml"
+        }
+      ],
+      "changelog-sections": [
+        { "type": "feat",     "section": "Features",            "hidden": false },
+        { "type": "fix",      "section": "Bug Fixes",           "hidden": false },
+        { "type": "perf",     "section": "Performance",         "hidden": false },
+        { "type": "revert",   "section": "Reverts",             "hidden": false },
+        { "type": "docs",     "section": "Documentation",       "hidden": false },
+        { "type": "chore",    "section": "Miscellaneous",       "hidden": true  },
+        { "type": "style",    "section": "Styles",              "hidden": true  },
+        { "type": "refactor", "section": "Code Refactoring",   "hidden": false },
+        { "type": "test",     "section": "Tests",               "hidden": true  },
+        { "type": "build",    "section": "Build System",        "hidden": false },
+        { "type": "ci",       "section": "CI/CD",               "hidden": true  }
+      ]
+    }
+  }
+}

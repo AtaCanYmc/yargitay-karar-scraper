@@ -1,7 +1,14 @@
 import pytest
+import re
 from unittest.mock import patch, AsyncMock
 import httpx
-from yargitay_karar_scraper.scraper import YargitayClient, SearchCriteria, DetailedSearchCriteria
+from yargitay_karar_scraper import __version__
+from yargitay_karar_scraper.scraper import YargitayClient, SearchCriteria
+
+
+def test_package_version():
+    assert __version__ is not None
+    assert re.match(r"^\d+\.\d+\.\d+", __version__)
 
 
 def test_client_initialization_default():
@@ -89,4 +96,3 @@ async def test_get_document_html_cleaning():
         )
         assert detail.id == "123"
         assert "Karar Metni & Gerekçe Detaylar" in detail.icerik
-
