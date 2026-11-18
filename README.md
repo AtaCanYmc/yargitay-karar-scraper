@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/logo.png" alt="Yargıtay Karar Arama Scraper Logo" width="220">
+  <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/assets/images/logo.png" alt="Yargıtay Karar Arama Scraper Logo" width="220">
 </p>
 
 <h1 align="center">Yargıtay Karar Arama Scraper & MCP Sunucusu</h1>
