@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://pypi.org/project/yargitay-karar-scraper/">
-    <img src="https://img.shields.io/badge/pypi-v0.1.0-blue.svg" alt="PyPI Sürümü">
+    <img src="https://img.shields.io/badge/pypi-v0.1.1-blue.svg" alt="PyPI Sürümü">
   </a>
   <a href="https://pypi.org/project/yargitay-karar-scraper/">
     <img src="https://img.shields.io/badge/python-3.10%2B-green.svg" alt="Python Sürümleri">
@@ -86,7 +86,16 @@ flowchart TD
 
 ## Kurulum
 
-### Kaynak Koddan Kurulum (Önerilen)
+### Homebrew ile Kurulum (Önerilen)
+
+macOS ve Linux üzerinde Homebrew tap aracılığıyla tek komutla kurabilirsiniz:
+
+```bash
+brew tap atacanymc/tap
+brew install yargitay-karar-scraper
+```
+
+### Kaynak Koddan Kurulum
 
 ```bash
 git clone https://github.com/AtaCanYmc/yargitay-karar-scraper.git
