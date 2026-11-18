@@ -65,6 +65,10 @@ jobs:
     needs: [release-please, build]
     if: ${{ needs.release-please.outputs.release_created }}
 
+    environment:
+      name: pypi
+      url: https://pypi.org/project/yargitay-karar-scraper/
+
     permissions:
       id-token: write # PyPI Trusted Publishing (OIDC)
       contents: read
