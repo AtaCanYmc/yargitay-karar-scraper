@@ -11,10 +11,10 @@
 
   <p>
     <a href="https://pypi.org/project/yargitay-karar-scraper/">
-      <img src="https://img.shields.io/badge/pypi-v0.1.2" alt="PyPI Sürümü"> <!-- x-release-please-version -->
+      <img src="https://img.shields.io/pypi/v/yargitay-karar-scraper.svg?color=0284c7&logo=pypi&logoColor=white" alt="PyPI Sürümü">
     </a>
     <a href="https://pypi.org/project/yargitay-karar-scraper/">
-      <img src="https://img.shields.io/badge/python-3.10%2B-green.svg" alt="Python Sürümleri">
+      <img src="https://img.shields.io/badge/python-3.10%2B-blue.svg?logo=python&logoColor=white" alt="Python Sürümleri">
     </a>
     <a href="https://github.com/AtaCanYmc/yargitay-karar-scraper/actions/workflows/ci.yml">
       <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/actions/workflows/ci.yml/badge.svg" alt="CI Durumu">
@@ -231,17 +231,17 @@ if __name__ == "__main__":
     <tr>
       <td align="center">
         <b>Basit Arama Sonucu</b><br>
-        <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/cli_search_example.png" alt="Basit Arama CLI">
+        <img src="assets/images/cli_search_example.png" alt="Basit Arama CLI">
       </td>
       <td align="center">
         <b>Detaylı Arama Sonucu</b><br>
-        <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/cli_detailed_search_example.png" alt="Detaylı Arama CLI">
+        <img src="assets/images/cli_detailed_search_example.png" alt="Detaylı Arama CLI">
       </td>
     </tr>
     <tr>
       <td colspan="2" align="center">
         <b>Karar Detay Görünümü</b><br>
-        <img src="https://github.com/AtaCanYmc/yargitay-karar-scraper/blob/main/images/cli_karar_detail_example.png" alt="Karar Detayı Okuma CLI">
+        <img src="assets/images/cli_karar_detail_example.png" alt="Karar Detayı Okuma CLI">
       </td>
     </tr>
   </table>
