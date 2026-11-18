@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/AtaCanYmc/yargitay-karar-scraper/compare/v0.1.4...v0.1.5) (2026-11-18)
+
+
+### Bug Fixes
+
+* **ci:** simplify publish.yml, add workflow_dispatch, and align with pypi trusted publisher ([cca0f0d](https://github.com/AtaCanYmc/yargitay-karar-scraper/commit/cca0f0db52d5e54d41aba479fa65f3dcbc8008c9))
+
 ## [0.1.4](https://github.com/AtaCanYmc/yargitay-karar-scraper/compare/v0.1.3...v0.1.4) (2026-11-18)
 
 
