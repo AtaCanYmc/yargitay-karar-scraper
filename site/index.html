@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Yargıtay Karar Scraper: Python SDK, CLI ve FastMCP İstemcisi</title>
+  <meta name="description" content="T.C. Yargıtay Başkanlığı emsal karar arama portalı için yüksek performanslı Python SDK, CLI ve FastMCP aracı.">
+  <meta name="keywords" content="yargıtay, emsal karar, hukuk, içtihat arama, python, cli, mcp, fastmcp, yargitay-karar-scraper">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      try {
+        const stored = localStorage.getItem("color-scheme");
+        if (stored === "light" || stored === "dark") {
+          document.querySelector('meta[name="color-scheme"]').content = stored;
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#" class="brand">
+        <img src="favicon.svg" alt="Yargıtay Karar Scraper Logo" class="brand-icon" width="30" height="30">
+        <span>Yargıtay Karar Scraper</span>
+        <span class="version-pill"><!-- x-release-please-version -->v0.1.1<!-- /x-release-please-version --></span>
+      </a>
+
+      <nav aria-label="Ana Gezinti">
+        <ul class="nav-links">
+          <li><a href="#mimari" class="nav-link">Mimari</a></li>
+          <li><a href="#playground" class="nav-link">Komut Sihirbazı</a></li>
+          <li><a href="#mcp" class="nav-link">FastMCP</a></li>
+          <li><a href="#python-sdk" class="nav-link">Python SDK</a></li>
+          <li><a href="https://github.com/AtaCanYmc/yargitay-karar-scraper" target="_blank" rel="noopener noreferrer" class="nav-link">GitHub</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="theme-toggle" class="btn-icon" aria-label="Tema Değiştir" title="Açık/Koyu Tema">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <a href="https://github.com/AtaCanYmc/yargitay-karar-scraper" target="_blank" rel="noopener noreferrer" class="btn-icon" aria-label="GitHub Deposu" title="GitHub Deposu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+          </svg>
+        </a>
+
+        <button class="btn-icon mobile-nav-toggle" aria-label="Menüyü Aç" aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <div class="preview-badge" style="margin-bottom: 12px; display: inline-block;">Python SDK / CLI / FastMCP</div>
+          <h1 class="hero-title">Resmi Yargıtay Karar Arama Servisi için Güvenilir İstemci</h1>
+          <p class="hero-lead">
+            Yargıtay emsal karar sistemini programatik olarak sorgulayın. Yüksek performanslı HTTP/2 istemcisi, interaktif terminal arayüzü ve yapay zeka ajanları için yerel Model Context Protocol (MCP) desteği bir arada.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#playground" class="btn btn-primary">Komut Oluştur</a>
+            <a href="#mcp" class="btn btn-secondary">FastMCP Entegrasyonu</a>
+          </div>
+
+          <!-- Quick Install Snippet -->
+          <div class="install-box">
+            <div class="install-header">
+              <div class="install-tabs">
+                <button type="button" class="install-tab-btn active" data-tool="pip">pip</button>
+                <button type="button" class="install-tab-btn" data-tool="uv">uv</button>
+                <button type="button" class="install-tab-btn" data-tool="brew">brew</button>
+              </div>
+              <button type="button" class="copy-btn" data-copy-target="install-code-text">Kopyala</button>
+            </div>
+            <div class="install-body">
+              <span style="color: #64748b; margin-right: 10px; user-select: none;">$</span>
+              <code id="install-code-text">pip install yargitay-karar-scraper</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Search Card -->
+        <div class="preview-card">
+          <div class="preview-card-header">
+            <div>
+              <strong style="font-size: 0.95rem;">Canlı Karar Önizleme</strong>
+              <div style="font-size: 0.78rem; color: var(--text-muted);">Örnek veriler üzerinde filtreleyin</div>
+            </div>
+            <span class="preview-badge">Demo</span>
+          </div>
+
+          <div class="search-input-group">
+            <input type="text" id="hero-search-input" class="search-input" placeholder="Kelime veya daire ara (örn. dolandırıcılık, tapu)..." aria-label="Örnek Karar Ara">
+            <button type="button" id="hero-search-btn" class="search-btn">Filtrele</button>
+          </div>
+
+          <div id="hero-results-list" class="sample-results-list">
+            <!-- Cases rendered dynamically by app.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="mimari" class="section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Mimari ve Yetenekler</span>
+          <h2 class="section-title">Hukuki Veriye Modern ve Güvenli Erişim</h2>
+          <p class="section-subtitle">
+            Hafif, tip güvenli ve hiçbir ek karmaşıklık içermeyen sıfır-slop mimari.
+          </p>
+        </div>
+
+        <div class="arch-grid">
+          <div class="arch-card">
+            <div class="arch-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.55v12.42a1.78 1.78 0 0 0 2.5 1.55L16.5 14.6a1.78 1.78 0 0 0 0-3.2z"></path>
+              </svg>
+            </div>
+            <h3 class="arch-title">Yüksek Performanslı Python SDK</h3>
+            <p class="arch-desc">
+              HTTP/2 destekli httpx tabanlı asenkron ve senkron arama motoru. SSL doğrulama korumalı, otomatik HTML unescape ve Pydantic veri modelleriyle tam tip güvenliği.
+            </p>
+          </div>
+
+          <div class="arch-card">
+            <div class="arch-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+              </svg>
+            </div>
+            <h3 class="arch-title">Gelişmiş CLI Arayüzü</h3>
+            <p class="arch-desc">
+              Terminalden anında arama yapın. Daire, esas, karar yılı ve kelime filtreleri ile sonuçları JSON veya insan tarafından okunabilir zengin tablo çıktısı olarak alın.
+            </p>
+          </div>
+
+          <div class="arch-card">
+            <div class="arch-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.93V17a1 1 0 0 1-2 0v-.07A7 7 0 0 1 5.07 11H5a1 1 0 0 1 0-2h.07A7 7 0 0 1 11 3.07V3a1 1 0 0 1 2 0v.07A7 7 0 0 1 18.93 9H19a1 1 0 0 1 0 2h-.07A7 7 0 0 1 13 16.93z"></path>
+              </svg>
+            </div>
+            <h3 class="arch-title">Yapay Zeka için FastMCP</h3>
+            <p class="arch-desc">
+              Model Context Protocol (MCP) standardı sayesinde Claude Desktop, Cursor ve otonom yapay zeka ajanlarını doğrudan Türkiye Yargıtay içtihatlarıyla buluşturun.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Command Builder Playground -->
+    <section id="playground" class="section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">İnteraktif Araç</span>
+          <h2 class="section-title">CLI Komut Sihirbazı</h2>
+          <p class="section-subtitle">
+            İhtiyacınız olan filtreleri belirleyin, kullanıma hazır CLI komutunu tek tıkla kopyalayın.
+          </p>
+        </div>
+
+        <div class="builder-layout">
+          <div class="form-card">
+            <div class="form-group">
+              <label for="cmd-type" class="form-label">Komut Türü</label>
+              <select id="cmd-type" class="form-control">
+                <option value="search">Hızlı Arama (search)</option>
+                <option value="detailed-search">Gelişmiş Arama (detailed-search)</option>
+                <option value="detail">Karar Metni Çek (detail)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="cmd-word" class="form-label">Anahtar Kelime veya Karar ID</label>
+              <input type="text" id="cmd-word" class="form-control" value="hırsızlık" placeholder="Aramak istediğiniz kelime...">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cmd-chamber" class="form-label">Daire (Opsiyonel)</label>
+                <input type="text" id="cmd-chamber" class="form-control" placeholder="Örn: 13. Ceza Dairesi">
+              </div>
+
+              <div class="form-group">
+                <label for="cmd-year" class="form-label">Karar Yılı</label>
+                <input type="text" id="cmd-year" class="form-control" placeholder="Örn: 2021">
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="cmd-limit" class="form-label">Sonuç Limiti (Sayfa Başına)</label>
+              <select id="cmd-limit" class="form-control">
+                <option value="5">5 Karar</option>
+                <option value="10" selected>10 Karar</option>
+                <option value="25">25 Karar</option>
+                <option value="50">50 Karar</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="output-card">
+            <div class="output-header">
+              <span>Terminal Çıktısı</span>
+              <button type="button" class="copy-btn" data-copy-target="builder-output-code">Kopyala</button>
+            </div>
+            <pre class="output-code"><code id="builder-output-code">yargitay-karar-cli search --kelime "hırsızlık" --page-size 10</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FastMCP Integration Section -->
+    <section id="mcp" class="section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Yapay Zeka Ajanları</span>
+          <h2 class="section-title">FastMCP ile Claude ve Cursor Entegrasyonu</h2>
+          <p class="section-subtitle">
+            LLM modellerinizin Yargıtay emsal kararlarını doğrudan okumasını sağlayın. Tek satır yapılandırma ile kullanıma hazır.
+          </p>
+        </div>
+
+        <div class="mcp-layout">
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 12px;">Claude Desktop Yapılandırması</h3>
+            <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6;">
+              <code>claude_desktop_config.json</code> dosyanıza aşağıdaki bloğu ekleyerek Claude Desktop üzerinden Yargıtay kararlarını sorgulayabilirsiniz.
+            </p>
+
+            <div class="code-snippet-box">
+              <div class="code-header">
+                <span>claude_desktop_config.json</span>
+                <button type="button" class="copy-btn" data-copy-target="claude-config-code">Kopyala</button>
+              </div>
+              <pre class="code-body"><code id="claude-config-code">{
+  "mcpServers": {
+    "yargitay": {
+      "command": "uvx",
+      "args": ["yargitay-karar-scraper", "--mcp"]
+    }
+  }
+}</code></pre>
+            </div>
+          </div>
+
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 12px;">Mevcut MCP Araçları</h3>
+            <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6;">
+              FastMCP sunucusu yapay zeka ajanlarına aşağıdaki standart araçları sunar:
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); padding: 14px; border-radius: var(--radius-sm);">
+                <div style="font-family: var(--font-mono); font-weight: 600; font-size: 0.88rem; color: var(--accent-primary); margin-bottom: 4px;">yargitay_search</div>
+                <div style="font-size: 0.84rem; color: var(--text-muted);">Anahtar kelimeye göre hızlı içtihat taraması yapar.</div>
+              </div>
+
+              <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); padding: 14px; border-radius: var(--radius-sm);">
+                <div style="font-family: var(--font-mono); font-weight: 600; font-size: 0.88rem; color: var(--accent-primary); margin-bottom: 4px;">yargitay_detailed_search</div>
+                <div style="font-size: 0.84rem; color: var(--text-muted);">Daire, esas, karar numarası ve yıl bazlı detaylı filtreleme sunar.</div>
+              </div>
+
+              <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); padding: 14px; border-radius: var(--radius-sm);">
+                <div style="font-family: var(--font-mono); font-weight: 600; font-size: 0.88rem; color: var(--accent-primary); margin-bottom: 4px;">yargitay_get_decision</div>
+                <div style="font-size: 0.84rem; color: var(--text-muted);">Tekil karar ID değeri ile tam gerekçeli içtihat metnini getirir.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Python SDK Section -->
+    <section id="python-sdk" class="section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Geliştirici Rehberi</span>
+          <h2 class="section-title">Python SDK ile Programatik Erişim</h2>
+          <p class="section-subtitle">
+            Asenkron veya senkron olarak doğrudan kodunuzun içerisinden içtihat sorgulayın.
+          </p>
+        </div>
+
+        <div class="code-snippet-box">
+          <div class="code-header">
+            <span>example.py</span>
+            <button type="button" class="copy-btn" data-copy-target="python-snippet-code">Kopyala</button>
+          </div>
+          <pre class="code-body"><code id="python-snippet-code">import asyncio
+from yargitay_karar_scraper import YargitayClient
+
+async def main():
+    async with YargitayClient() as client:
+        # 1. Anahtar kelimeyle hızlı arama
+        results = await client.search(kelime="dolandırıcılık", page_size=5)
+        print(f"Toplam bulunan karar: {results.total}")
+
+        for doc in results.documents:
+            print(f"- {doc.daire} | Esas: {doc.esas_no} | Karar: {doc.karar_no}")
+
+        # 2. Karar metnini tam detay olarak çekme
+        if results.documents:
+            first_id = results.documents[0].id
+            decision = await client.get_decision(first_id)
+            print(f"\nKarar Metni ({decision.id}):\n{decision.metin[:300]}...")
+
+if __name__ == "__main__":
+    asyncio.run(main())</code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Decision Detail Modal -->
+  <div id="decision-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-case-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-case-title" class="modal-title">Karar Detayı</h3>
+        <button type="button" id="modal-close-btn" class="modal-close-btn" aria-label="Kapat">&times;</button>
+      </div>
+      <div id="modal-case-body" class="modal-body">
+        <!-- Rendered by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>Yargıtay Karar Scraper</strong>
+        <p style="margin-top: 4px; font-size: 0.84rem;">MIT Lisansı ile korunmaktadır. Açık kaynaklı hukuki teknoloji projesi.</p>
+      </div>
+      <div style="display: flex; gap: 20px;">
+        <a href="https://github.com/AtaCanYmc/yargitay-karar-scraper" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://pypi.org/project/yargitay-karar-scraper/" target="_blank" rel="noopener noreferrer">PyPI</a>
+        <a href="https://github.com/AtaCanYmc/homebrew-tap" target="_blank" rel="noopener noreferrer">Homebrew</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

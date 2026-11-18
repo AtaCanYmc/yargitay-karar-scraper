@@ -17,10 +17,14 @@
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="Lisans">
   </a>
+  <a href="https://atacanymc.github.io/yargitay-karar-scraper/">
+    <img src="https://img.shields.io/badge/docs-GitHub%20Pages-0284c7?logo=github&logoColor=white" alt="Dökümantasyon">
+  </a>
 </p>
 
 <p align="center">
-  Yargıtay Karar Arama portalı için asenkron Python istemcisi, Rich tabanlı CLI arayüzü ve Model Context Protocol (MCP) sunucusudur.
+  Yargıtay Karar Arama portalı için asenkron Python istemcisi, Rich tabanlı CLI arayüzü ve Model Context Protocol (MCP) sunucusudur.<br>
+  <strong><a href="https://atacanymc.github.io/yargitay-karar-scraper/">Canlı Dökümantasyon ve İnteraktif Komut Sihirbazı &rarr;</a></strong>
 </p>
 
 ---
